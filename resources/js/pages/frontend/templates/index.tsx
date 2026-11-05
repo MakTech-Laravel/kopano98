@@ -90,9 +90,7 @@ export default function TemplatesIndex() {
                         </p>
                         <h1 className="font-lp-display mb-3 text-[clamp(1.85rem,5vw,2.85rem)] leading-tight text-white">
                             Templates for every industry,{' '}
-                            <em className="text-lp-gold italic">
-                                every country
-                            </em>
+                            <span className="text-lp-gold">every country</span>
                             , every version of you.
                         </h1>
                         <p className="mb-5 max-w-xl text-sm leading-relaxed text-pretty text-white/68">

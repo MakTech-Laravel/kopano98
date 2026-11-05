@@ -25,7 +25,7 @@ export default function ServicesIndex() {
                 </p>
                 <h1 className="font-lp-display text-[clamp(1.9rem,5vw,3rem)] text-white">
                     Pay only for what you{' '}
-                    <em className="text-lp-gold italic">need.</em>
+                    <span className="text-lp-gold">need.</span>
                 </h1>
                 <p className="mx-auto mt-3 max-w-lg text-sm text-pretty text-white/70">
                     Delivered to your inbox within the stated timeframe. Local

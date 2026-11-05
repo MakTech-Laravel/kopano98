@@ -22,7 +22,7 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'Senior CV Specialist',
         bio: 'Turns messy experience into quantified, ATS-safe stories without sounding robotic.',
         tags: ['CV', 'ATS', 'Mid–Senior'],
-        image: '/images/launchpad/photos/photo-1.jpg',
+        image: '/images/launchpad/reviews/naledi.jpg',
     },
     {
         id: 'writer-b',
@@ -30,7 +30,7 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'LinkedIn & Branding',
         bio: 'Headlines, About sections, and positioning that match how recruiters actually search.',
         tags: ['LinkedIn', 'Positioning'],
-        image: '/images/launchpad/photos/photo-2.jpg',
+        image: '/images/launchpad/reviews/siyanda.jpg',
     },
     {
         id: 'coach',
@@ -38,6 +38,6 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'Coaching Lead',
         bio: 'STAR answers, salary conversations, and calm performance under pressure.',
         tags: ['Interviews', 'STAR'],
-        image: '/images/launchpad/photos/photo-3.jpg',
+        image: '/images/launchpad/reviews/thabo.jpg',
     },
 ];

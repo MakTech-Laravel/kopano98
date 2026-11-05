@@ -12,20 +12,20 @@ export const launchpadTestimonials: LaunchpadTestimonial[] = [
         name: 'Thabo M.',
         role: 'Civil Engineer · Gauteng',
         service: 'CV Rewrite',
-        photo: '/images/launchpad/photos/photo-1.jpg',
+        photo: '/images/launchpad/reviews/thabo.jpg',
     },
     {
         quote: 'My LinkedIn had been the same for years. After the overhaul recruiters started reaching out within days. The headline alone made such a big difference.',
         name: 'Naledi K.',
         role: 'HR Manager · Johannesburg',
         service: 'LinkedIn Profile Fix',
-        photo: '/images/launchpad/photos/photo-2.jpg',
+        photo: '/images/launchpad/reviews/naledi.jpg',
     },
     {
         quote: 'I was switching careers and really struggled to explain my background on paper. They just got it straight away and put together something I was actually proud to send out.',
         name: 'Siyanda D.',
         role: 'Finance to Project Management · Cape Town',
         service: 'CV Rewrite',
-        photo: '/images/launchpad/photos/photo-3.jpg',
+        photo: '/images/launchpad/reviews/siyanda.jpg',
     },
 ];

@@ -96,7 +96,7 @@ function HomeContent() {
                 title={
                     <>
                         Is your CV{' '}
-                        <em className="text-lp-gold italic">ATS friendly?</em>
+                        <span className="text-lp-gold">ATS friendly?</span>
                     </>
                 }
                 subtitle="Free ATS check in seconds — plus professional rewrites, LinkedIn fixes, and interview prep from Launchpad Careers."
@@ -214,7 +214,7 @@ function HomeContent() {
                                         <img
                                             src={item.photo}
                                             alt={item.name}
-                                            className="h-11 w-11 rounded-full object-cover"
+                                            className="h-11 w-11 rounded-full object-cover object-top"
                                             loading="lazy"
                                         />
                                         <div>
@@ -249,21 +249,21 @@ function HomeContent() {
                                 body: 'Upload a CV and see a sample match score — live parsing lands in Milestone 2.',
                                 href: '/tools',
                                 image: '/images/launchpad/tools/ats-checker.jpg',
-                                alt: 'Resume documents ready for ATS checking',
+                                alt: 'Deep Scan ATS checker showing live score, issues, and highlighted CV',
                             },
                             {
                                 title: 'LinkedIn preview',
                                 body: 'Explore headline and About improvements before you order a full profile fix.',
                                 href: '/tools',
                                 image: '/images/launchpad/tools/linkedin-preview.jpg',
-                                alt: 'Professional reviewing career profile data on a laptop',
+                                alt: 'Professional preparing a polished LinkedIn profile',
                             },
                             {
                                 title: 'Cover letter shell',
                                 body: 'Draft structure ready for role-specific generation later.',
                                 href: '/tools',
                                 image: '/images/launchpad/tools/cover-letter.jpg',
-                                alt: 'Fountain pen drafting a cover letter',
+                                alt: 'Professional drafting a cover letter at a desk',
                             },
                         ].map((tool, index) => (
                             <Reveal key={tool.title} delay={index * 0.05}>
@@ -428,7 +428,7 @@ function HomeContent() {
                     </p>
                     <h2 className="font-lp-display text-[clamp(1.6rem,4vw,2.4rem)] text-white">
                         Start{' '}
-                        <em className="text-lp-gold italic">free</em> and
+                        <span className="text-lp-gold">free</span> and
                         upgrade when ready.
                     </h2>
                     <p className="mx-auto mt-3 max-w-md text-sm text-white/65">
