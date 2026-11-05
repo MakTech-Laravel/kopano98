@@ -1,67 +1,129 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
-import { SectionHeading } from '@/components/launchpad/section-heading';
-import { launchpadTeam } from '@/data/launchpad/team';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
+
+const approachPillars = [
+    {
+        title: 'Research-led',
+        description: 'Tracking what actually gets people shortlisted',
+    },
+    {
+        title: 'Hands-on',
+        description: 'Every CV personally reviewed, never outsourced',
+    },
+    {
+        title: 'Always improving',
+        description: 'The scoring engine updates as hiring changes',
+    },
+] as const;
 
 export default function About() {
     return (
         <LaunchpadLayout>
             <Head title="About | Launchpad Careers" />
 
-            <section className="bg-lp-navy py-10 text-center sm:py-12">
-                <div className="container">
-                    <h1 className="font-lp-display text-[clamp(1.85rem,5vw,2.85rem)] text-white">
-                        About Launchpad
-                    </h1>
-                    <p className="mx-auto mt-3 max-w-xl text-sm text-pretty text-white/70">
-                        Human-led career services with ATS-safe defaults — built for
-                        candidates who need results, not fluff.
-                    </p>
+            <section className="py-10 sm:py-12">
+                <div className="container max-w-[1000px]">
+                    <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
+                        <div className="w-full max-w-[300px] shrink-0">
+                            <img
+                                src="/images/launchpad/team/kopano.jpg"
+                                alt="Kopano Thantsha, Founder of Launchpad Careers"
+                                className="w-full rounded-xl object-cover shadow-[0_20px_40px_rgba(13,27,42,0.18)]"
+                            />
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                            <p className="mb-2 text-[0.7rem] font-medium tracking-[0.08em] text-[var(--lp-gold-on-light)] uppercase">
+                                The Founder
+                            </p>
+                            <h1 className="font-lp-display text-lp-navy mb-4 text-[clamp(1.85rem,4.5vw,2.5rem)] leading-tight">
+                                Kopano Thantsha
+                            </h1>
+                            <div className="text-lp-mid space-y-4 text-[0.92rem] leading-[1.75]">
+                                <p>
+                                    Launchpad Careers started from a simple
+                                    observation: most people don&apos;t lose out
+                                    on jobs because they lack the skills. They
+                                    lose out because their CV never makes it past
+                                    the first ten seconds of an ATS parser. That
+                                    gap between what someone can do and whether a
+                                    recruiter sees it is the exact problem
+                                    Launchpad was built to solve.
+                                </p>
+                                <p>
+                                    Closing that gap started with research:
+                                    working closely with people across different
+                                    recruitment fields to understand how they
+                                    actually screen a CV and view a LinkedIn
+                                    profile, studying how different ATS systems
+                                    parse, rank and sometimes reject the same
+                                    document in completely different ways, and
+                                    digging into what genuinely separates the top
+                                    1% of candidates from everyone else applying
+                                    for the same role. All of that was combined
+                                    into one strong, leading engine, Deep Scan and
+                                    LinkedIn Pro, personally maintained and kept
+                                    current as hiring itself keeps changing.
+                                </p>
+                                <p>
+                                    From the start, the goal was to let people
+                                    see their CV issues live when they scan, right
+                                    there in plain sight, instead of being told
+                                    secondhand by someone behind a screen. And it
+                                    doesn&apos;t stop at the CV; the same thinking
+                                    is built into the LinkedIn side too, so people
+                                    get more visibility and a real shot at being
+                                    found, not just read.
+                                </p>
+                            </div>
+                            <div className="mt-6 flex flex-wrap gap-3">
+                                <Link
+                                    href="/contact"
+                                    className="btn-lp-gold inline-flex px-5 py-2.5 text-[0.85rem]"
+                                >
+                                    Work with us →
+                                </Link>
+                                <Link
+                                    href="/services"
+                                    className="text-lp-navy inline-flex items-center rounded-[5px] border-[1.5px] border-[var(--lp-navy)] bg-transparent px-5 py-2.5 text-[0.85rem] font-bold transition hover:bg-[var(--lp-off)]"
+                                >
+                                    View Services
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section className="py-10 sm:py-12">
-                <div className="container">
-                    <SectionHeading
-                        label="Team"
-                        title="The people behind the rewrites."
-                    />
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        {launchpadTeam.map((member) => (
-                            <article
-                                key={member.id}
-                                className="rounded-[10px] border border-[var(--lp-border)] bg-white p-5 sm:p-6"
+            <section className="bg-lp-navy border-b border-white/12">
+                <div className="container max-w-[1000px] py-12 text-center sm:py-14">
+                    <p className="mb-3 text-[0.68rem] font-bold tracking-[0.14em] text-[var(--lp-gold)] uppercase">
+                        The Approach
+                    </p>
+                    <h2 className="font-lp-display mx-auto mb-3.5 max-w-[700px] text-[clamp(1.4rem,3.6vw,2rem)] leading-[1.3] font-bold text-white">
+                        Where real market research meets a tool built to act on
+                        it.
+                    </h2>
+                    <p className="mx-auto mb-9 max-w-[540px] text-[0.88rem] leading-[1.65] text-white/65">
+                        Not theory, not guesswork. Ongoing research into how
+                        hiring actually works right now, built directly into
+                        every scan and every CV we touch.
+                    </p>
+
+                    <div className="grid gap-4 text-left sm:grid-cols-3">
+                        {approachPillars.map((pillar) => (
+                            <div
+                                key={pillar.title}
+                                className="rounded-md border-t-[3px] border-[var(--lp-gold)] bg-white px-5 py-6"
                             >
-                                <div className="mb-3 flex items-center gap-3 sm:gap-4">
-                                    <img
-                                        src={member.image}
-                                        alt={member.name}
-                                        className="h-12 w-12 shrink-0 rounded-full object-cover sm:h-14 sm:w-14"
-                                    />
-                                    <div className="min-w-0">
-                                        <h3 className="font-lp-display text-lp-navy text-xl">
-                                            {member.name}
-                                        </h3>
-                                        <p className="text-[0.72rem] font-medium tracking-[0.06em] text-[var(--lp-gold-on-light-sm)] uppercase">
-                                            {member.role}
-                                        </p>
-                                    </div>
-                                </div>
-                                <p className="text-lp-mid mb-3 text-[0.82rem] leading-relaxed">
-                                    {member.bio}
+                                <h3 className="font-lp-display text-lp-navy mb-2 text-[1.2rem] font-bold">
+                                    {pillar.title}
+                                </h3>
+                                <p className="text-[0.72rem] font-bold tracking-[0.05em] text-[var(--lp-text-light)] uppercase leading-relaxed">
+                                    {pillar.description}
                                 </p>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {member.tags.map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="rounded border border-[var(--lp-border)] bg-[var(--lp-off)] px-2 py-0.5 text-[0.67rem] font-semibold text-[var(--lp-text-mid)]"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            </article>
+                            </div>
                         ))}
                     </div>
                 </div>

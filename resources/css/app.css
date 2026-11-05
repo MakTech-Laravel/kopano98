@@ -71,7 +71,9 @@
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
 
@@ -91,7 +93,9 @@
 }
 
 @keyframes glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
   }
 
@@ -343,7 +347,13 @@
     background: #ffffff;
   }
 
-  h1, h2, h3, h4, h5, h6, button {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  button {
     @apply font-montserrat;
   }
 }
@@ -517,25 +527,30 @@
   padding-inline: 1rem;
   max-width: 100%;
 
-  @media (width >= 40rem) {
-    max-width: 40rem; /* sm */
+  @media (width >=40rem) {
+    max-width: 40rem;
+    /* sm */
     padding-inline: 1.5rem;
   }
 
-  @media (width >= 48rem) {
-    max-width: 48rem; /* md */
+  @media (width >=48rem) {
+    max-width: 48rem;
+    /* md */
   }
 
-  @media (width >= 64rem) {
-    max-width: 64rem; /* lg */
+  @media (width >=64rem) {
+    max-width: 64rem;
+    /* lg */
   }
 
-  @media (width >= 80rem) {
-    max-width: 80rem; /* xl */
+  @media (width >=80rem) {
+    max-width: 80rem;
+    /* xl */
   }
 
-  @media (width >= 96rem) {
-    max-width: 96rem; /* 2xl */
+  @media (width >=96rem) {
+    max-width: 96rem;
+    /* 2xl */
   }
 }
 
@@ -545,20 +560,20 @@
  * Ink navy + muted brass + paper ground; Instrument Serif + DM Sans.
  */
 .launchpad {
-  --lp-navy: #1a2332;
-  --lp-navy-2: #243041;
-  --lp-navy-3: #334155;
-  --lp-gold: #b8943f;
-  --lp-gold-2: #c9a85a;
-  --lp-gold-on-light: #8f7330;
-  --lp-gold-on-light-sm: #74602a;
-  --lp-off: #f3f2ef;
-  --lp-paper: #fffcf7;
-  --lp-text: #1c2430;
-  --lp-text-mid: #5a6170;
-  --lp-text-light: #7d8490;
-  --lp-border: #e4e2dc;
-  --lp-green: #3d7a55;
+  --lp-navy: #0d1b2a;
+  --lp-navy-2: #152536;
+  --lp-navy-3: #1e3448;
+  --lp-gold: #d4a842;
+  --lp-gold-2: #e8c06a;
+  --lp-gold-on-light: #b68f24;
+  --lp-gold-on-light-sm: #886b1b;
+  --lp-off: #f4f6f9;
+  --lp-paper: #ffffff;
+  --lp-text: #0d1b2a;
+  --lp-text-mid: #4a5568;
+  --lp-text-light: #718096;
+  --lp-border: #e2e8f0;
+  --lp-green: #16a34a;
   --font-lp-display: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-lp-sans: 'DM Sans', 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
   color: var(--lp-text);
@@ -650,6 +665,7 @@
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }

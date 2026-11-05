@@ -58,42 +58,54 @@ export default function TemplatesIndex() {
         <LaunchpadLayout>
             <Head title="CV Templates | Launchpad Careers" />
 
-            <section className="bg-gradient-to-b from-[#fcfaf5] to-[var(--lp-off)] py-10 sm:py-12">
-                <div className="container grid items-center gap-8 md:grid-cols-[1fr_240px] lg:grid-cols-[1fr_280px]">
-                    <div className="min-w-0">
-                        <h1 className="font-lp-display text-lp-navy mb-3 text-[clamp(1.7rem,4vw,2.4rem)]">
-                            CV templates that hire
-                        </h1>
-                        <p className="text-lp-mid mb-4 max-w-xl text-sm leading-relaxed text-pretty">
-                            Filter by experience, photo, columns, and style. We
-                            recommend ATS-safe single-column layouts for most
-                            applications.
+            <section className="bg-lp-navy relative overflow-hidden py-12 sm:py-14">
+                <div
+                    className="pointer-events-none absolute inset-0 opacity-50"
+                    style={{
+                        background:
+                            'radial-gradient(ellipse at 80% 0%, rgba(212,168,66,0.16), transparent 45%)',
+                    }}
+                />
+                <div className="container relative grid items-center gap-8 md:grid-cols-[1.2fr_0.8fr]">
+                    <div className="min-w-0 text-left">
+                        <p className="mb-2 text-[0.7rem] font-medium tracking-[0.08em] text-[rgba(201,168,90,0.85)] uppercase">
+                            Template library
                         </p>
-                        <ul className="space-y-2 text-sm font-semibold text-[var(--lp-text)]">
-                            <li className="flex items-center gap-2">
-                                <span className="bg-lp-gold/15 text-[var(--lp-gold-on-light-sm)] flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-semibold">
-                                    ✓
-                                </span>
-                                ATS-safe options marked clearly
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="bg-lp-gold/15 text-[var(--lp-gold-on-light-sm)] flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-semibold">
-                                    ✓
-                                </span>
-                                Colour swatches for quick preview
-                            </li>
+                        <h1 className="font-lp-display mb-3 text-[clamp(1.85rem,5vw,2.85rem)] leading-tight text-white">
+                            Templates for every industry,{' '}
+                            <em className="text-lp-gold italic">
+                                every country
+                            </em>
+                            , every version of you.
+                        </h1>
+                        <p className="mb-5 max-w-xl text-sm leading-relaxed text-pretty text-white/68">
+                            A creative role in Cape Town and a corporate one in
+                            Dubai need different CVs — not one template stretched
+                            to fit. Filter by experience, photo, columns, and
+                            style.
+                        </p>
+                        <ul className="space-y-2 text-sm font-semibold text-white/85">
+                            {[
+                                'Styled for every industry',
+                                'Built to match hiring norms by country',
+                                'ATS-safe options marked clearly',
+                            ].map((item) => (
+                                <li key={item} className="flex items-center gap-2">
+                                    <span className="text-lp-gold flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[0.65rem] font-semibold">
+                                        ✓
+                                    </span>
+                                    {item}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div className="hidden justify-end md:flex">
-                        <div className="w-full max-w-[200px] rounded-xl border border-[var(--lp-border)] bg-white p-3 shadow-md">
-                            <div className="bg-lp-navy mb-2 h-2 rounded" />
-                            <div className="mb-3 h-1.5 w-1/2 rounded bg-slate-200" />
-                            <div className="space-y-1.5">
-                                <div className="h-1.5 rounded bg-slate-100" />
-                                <div className="h-1.5 w-5/6 rounded bg-slate-100" />
-                                <div className="h-1.5 w-4/6 rounded bg-slate-100" />
-                            </div>
-                        </div>
+                        <img
+                            src="/images/launchpad/templates/executive.png"
+                            alt="Executive CV template preview"
+                            className="w-full max-w-[240px] rounded-xl border border-white/10 shadow-2xl"
+                            loading="lazy"
+                        />
                     </div>
                 </div>
             </section>

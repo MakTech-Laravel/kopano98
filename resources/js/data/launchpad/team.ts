@@ -10,11 +10,11 @@ export type LaunchpadTeamMember = {
 export const launchpadTeam: LaunchpadTeamMember[] = [
     {
         id: 'kopano',
-        name: 'Kopano',
+        name: 'Kopano Thantsha',
         role: 'Founder · Career Strategist',
-        bio: 'Builds Launchpad around practical hiring outcomes — clean CVs, sharper LinkedIn profiles, and interview readiness that holds up under real recruiters.',
-        tags: ['Strategy', 'Rewrites', 'Coaching'],
-        image: '/images/launchpad/team/F06D4E59-F097-4B36-990C-FAA2F145E63C.jpeg',
+        bio: 'Built Launchpad around the gap between what someone can do and whether a recruiter sees it — Deep Scan, LinkedIn Pro, and hands-on CV work that stays current with real hiring.',
+        tags: ['Strategy', 'Deep Scan', 'Coaching'],
+        image: '/images/launchpad/team/kopano.jpg',
     },
     {
         id: 'writer-a',
@@ -22,7 +22,7 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'Senior CV Specialist',
         bio: 'Turns messy experience into quantified, ATS-safe stories without sounding robotic.',
         tags: ['CV', 'ATS', 'Mid–Senior'],
-        image: '/images/launchpad/team/01C01422-53A9-4F61-A7F5-4475AD285883.jpeg',
+        image: '/images/launchpad/photos/photo-1.jpg',
     },
     {
         id: 'writer-b',
@@ -30,7 +30,7 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'LinkedIn & Branding',
         bio: 'Headlines, About sections, and positioning that match how recruiters actually search.',
         tags: ['LinkedIn', 'Positioning'],
-        image: '/images/launchpad/team/3839FA76-DC9A-4A7E-B221-45BC398CA785.jpeg',
+        image: '/images/launchpad/photos/photo-2.jpg',
     },
     {
         id: 'coach',
@@ -38,6 +38,6 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'Coaching Lead',
         bio: 'STAR answers, salary conversations, and calm performance under pressure.',
         tags: ['Interviews', 'STAR'],
-        image: '/images/launchpad/team/6A3AA655-B042-4DAA-BB02-0E66C622074E.jpeg',
+        image: '/images/launchpad/photos/photo-3.jpg',
     },
 ];
