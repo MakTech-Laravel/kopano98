@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -17,13 +18,23 @@ export function ServiceCard({
     const { addService } = useLaunchpadCart();
     const { formatPrice, formatBaseZar, currencyCode } = useLaunchpadLocale();
     const isPackage = variant === 'package';
+    const reduceMotion = useReducedMotion();
 
     return (
-        <article
-            className={`relative flex h-full flex-col overflow-hidden rounded-[10px] border bg-white transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(13,27,42,0.08)] ${service.popular
-                    ? 'border-[var(--lp-navy)] shadow-sm'
-                    : 'border-[var(--lp-border)]'
+        <motion.article
+            className={`relative flex h-full flex-col overflow-hidden rounded-[10px] border bg-white ${service.popular
+                ? 'border-[var(--lp-navy)] shadow-sm'
+                : 'border-[var(--lp-border)]'
                 }`}
+            whileHover={
+                reduceMotion
+                    ? undefined
+                    : {
+                        y: -4,
+                        boxShadow: '0 12px 28px rgba(13,27,42,0.08)',
+                    }
+            }
+            transition={{ duration: 0.22 }}
         >
             {service.popular ? (
                 <span className="bg-lp-navy text-lp-gold absolute top-0 right-0 z-10 rounded-bl-md px-2.5 py-1 text-[0.62rem] font-semibold tracking-[0.06em] uppercase">
@@ -33,8 +44,8 @@ export function ServiceCard({
 
             <div
                 className={`px-4 pt-4 pb-3 ${isPackage
-                        ? 'bg-lp-navy text-white'
-                        : 'bg-[linear-gradient(160deg,var(--lp-navy)_0%,var(--lp-navy-2)_100%)] text-white'
+                    ? 'bg-lp-navy text-white'
+                    : 'bg-[linear-gradient(160deg,var(--lp-navy)_0%,var(--lp-navy-2)_100%)] text-white'
                     }`}
             >
                 {service.badge ? (
@@ -113,6 +124,6 @@ export function ServiceCard({
                     </button>
                 </div>
             </div>
-        </article>
+        </motion.article>
     );
 }

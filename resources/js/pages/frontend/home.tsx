@@ -248,19 +248,22 @@ function HomeContent() {
                                 title: 'ATS CV Checker',
                                 body: 'Upload a CV and see a sample match score — live parsing lands in Milestone 2.',
                                 href: '/tools',
-                                image: '/images/launchpad/photos/photo-4.jpg',
+                                image: '/images/launchpad/tools/ats-checker.jpg',
+                                alt: 'Resume documents ready for ATS checking',
                             },
                             {
                                 title: 'LinkedIn preview',
                                 body: 'Explore headline and About improvements before you order a full profile fix.',
                                 href: '/tools',
-                                image: '/images/launchpad/photos/photo-5.jpg',
+                                image: '/images/launchpad/tools/linkedin-preview.jpg',
+                                alt: 'Professional reviewing career profile data on a laptop',
                             },
                             {
                                 title: 'Cover letter shell',
                                 body: 'Draft structure ready for role-specific generation later.',
                                 href: '/tools',
-                                image: '/images/launchpad/photos/photo-6.jpg',
+                                image: '/images/launchpad/tools/cover-letter.jpg',
+                                alt: 'Fountain pen drafting a cover letter',
                             },
                         ].map((tool, index) => (
                             <Reveal key={tool.title} delay={index * 0.05}>
@@ -268,12 +271,13 @@ function HomeContent() {
                                     href={tool.href}
                                     className="group block h-full overflow-hidden rounded-[10px] border border-[var(--lp-border)] bg-white transition hover:border-[var(--lp-navy-3)] hover:shadow-[0_12px_28px_rgba(13,27,42,0.08)]"
                                 >
-                                    <div className="aspect-[16/10] overflow-hidden">
+                                    <div className="aspect-[16/10] overflow-hidden bg-[var(--lp-off)]">
                                         <img
                                             src={tool.image}
-                                            alt=""
-                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                                            alt={tool.alt}
+                                            className="h-full w-full object-cover object-center transition duration-700 ease-out group-hover:scale-[1.05]"
                                             loading="lazy"
+                                            decoding="async"
                                         />
                                     </div>
                                     <div className="p-5">

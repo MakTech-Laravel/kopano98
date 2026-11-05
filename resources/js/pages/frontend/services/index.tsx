@@ -1,15 +1,16 @@
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 
+import { PageBand } from '@/components/launchpad/page-band';
 import { Reveal } from '@/components/launchpad/reveal';
 import { SectionHeading } from '@/components/launchpad/section-heading';
 import { ServiceCard } from '@/components/launchpad/service-card';
+import { launchpadFaqs } from '@/data/launchpad/faqs';
 import {
     serviceGroups,
     servicesInGroup,
 } from '@/data/launchpad/services';
-import { launchpadFaqs } from '@/data/launchpad/faqs';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
-import { useState } from 'react';
 
 export default function ServicesIndex() {
     const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -18,29 +19,19 @@ export default function ServicesIndex() {
         <LaunchpadLayout>
             <Head title="Services & Pricing | Launchpad Careers" />
 
-            <section className="bg-lp-navy relative overflow-hidden py-12 text-center sm:py-14">
-                <div
-                    className="pointer-events-none absolute inset-0 opacity-50"
-                    style={{
-                        background:
-                            'radial-gradient(ellipse at 70% 0%, rgba(184,148,63,0.18), transparent 48%), radial-gradient(ellipse at 10% 100%, rgba(61,122,85,0.12), transparent 40%)',
-                    }}
-                />
-                <div className="container relative">
-                    <p className="mb-2 text-[0.7rem] font-medium tracking-[0.08em] text-[rgba(201,168,90,0.85)] uppercase">
-                        Individual services &amp; packages
-                    </p>
-                    <h1 className="font-lp-display text-[clamp(1.9rem,5vw,3rem)] text-white">
-                        Pay only for what you{' '}
-                        <em className="text-lp-gold italic">need.</em>
-                    </h1>
-                    <p className="mx-auto mt-3 max-w-lg text-sm text-pretty text-white/70">
-                        Delivered to your inbox within the stated timeframe.
-                        Local currency pricing · Payfast (SA) or Paddle
-                        (international).
-                    </p>
-                </div>
-            </section>
+            <PageBand>
+                <p className="mb-2 text-[0.7rem] font-medium tracking-[0.08em] text-[rgba(201,168,90,0.85)] uppercase">
+                    Individual services &amp; packages
+                </p>
+                <h1 className="font-lp-display text-[clamp(1.9rem,5vw,3rem)] text-white">
+                    Pay only for what you{' '}
+                    <em className="text-lp-gold italic">need.</em>
+                </h1>
+                <p className="mx-auto mt-3 max-w-lg text-sm text-pretty text-white/70">
+                    Delivered to your inbox within the stated timeframe. Local
+                    currency pricing · Payfast (SA) or Paddle (international).
+                </p>
+            </PageBand>
 
             <section className="py-8 sm:py-10">
                 <div className="container space-y-12">
@@ -67,9 +58,9 @@ export default function ServicesIndex() {
                                 ) : null}
                                 <div
                                     className={`grid gap-4 ${group.id === 'package' ||
-                                            group.id === 'portfolio'
-                                            ? 'sm:grid-cols-2'
-                                            : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                                        group.id === 'portfolio'
+                                        ? 'sm:grid-cols-2'
+                                        : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                                         }`}
                                 >
                                     {items.map((service, index) => (

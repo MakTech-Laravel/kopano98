@@ -1,3 +1,5 @@
+import { usePage } from '@inertiajs/react';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 import { CartDrawer } from '@/components/launchpad/cart-drawer';
@@ -14,6 +16,9 @@ type LaunchpadLayoutProps = {
 };
 
 export default function LaunchpadLayout({ children }: LaunchpadLayoutProps) {
+    const { url } = usePage();
+    const reduceMotion = useReducedMotion();
+
     return (
         <LaunchpadLocaleProvider>
             <LaunchpadCartProvider>
@@ -21,7 +26,22 @@ export default function LaunchpadLayout({ children }: LaunchpadLayoutProps) {
                     <LaunchpadHeader />
                     <RegionBanner />
                     <MobileCartBar />
-                    <main className="flex flex-1 flex-col">{children}</main>
+                    <motion.main
+                        key={url}
+                        className="flex flex-1 flex-col"
+                        initial={
+                            reduceMotion
+                                ? false
+                                : { opacity: 0, y: 10 }
+                        }
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.35,
+                            ease: [0.22, 1, 0.36, 1],
+                        }}
+                    >
+                        {children}
+                    </motion.main>
                     <LaunchpadFooter />
                     <CartDrawer />
                     <WhatsappFab />

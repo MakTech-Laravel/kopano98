@@ -1,6 +1,13 @@
 import { Head } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { lazy, Suspense, useMemo, useState } from 'react';
 
+import {
+    FadeIn,
+    Reveal,
+    Stagger,
+    StaggerItem,
+} from '@/components/launchpad/reveal';
 import {
     FilterSidebar,
     type TemplateFilters,
@@ -8,6 +15,12 @@ import {
 import { TemplateCard } from '@/components/launchpad/templates/template-card';
 import { launchpadTemplates } from '@/data/launchpad/templates';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
+
+const AtmosphereScene = lazy(() =>
+    import('@/components/launchpad/atmosphere-scene').then((module) => ({
+        default: module.AtmosphereScene,
+    })),
+);
 
 const defaultFilters: TemplateFilters = {
     experience: 'any',
@@ -20,6 +33,7 @@ const defaultFilters: TemplateFilters = {
 
 export default function TemplatesIndex() {
     const [filters, setFilters] = useState<TemplateFilters>(defaultFilters);
+    const reduceMotion = useReducedMotion();
 
     const filtered = useMemo(() => {
         return launchpadTemplates.filter((template) => {
@@ -58,7 +72,10 @@ export default function TemplatesIndex() {
         <LaunchpadLayout>
             <Head title="CV Templates | Launchpad Careers" />
 
-            <section className="bg-lp-navy relative overflow-hidden py-12 sm:py-14">
+            <section className="bg-lp-navy relative isolate overflow-hidden py-12 sm:py-14">
+                <Suspense fallback={null}>
+                    <AtmosphereScene density={1.05} />
+                </Suspense>
                 <div
                     className="pointer-events-none absolute inset-0 opacity-50"
                     style={{
@@ -66,8 +83,8 @@ export default function TemplatesIndex() {
                             'radial-gradient(ellipse at 80% 0%, rgba(212,168,66,0.16), transparent 45%)',
                     }}
                 />
-                <div className="container relative grid items-center gap-8 md:grid-cols-[1.2fr_0.8fr]">
-                    <div className="min-w-0 text-left">
+                <div className="container relative z-10 grid items-center gap-8 md:grid-cols-[1.2fr_0.8fr]">
+                    <FadeIn className="min-w-0 text-left">
                         <p className="mb-2 text-[0.7rem] font-medium tracking-[0.08em] text-[rgba(201,168,90,0.85)] uppercase">
                             Template library
                         </p>
@@ -89,35 +106,67 @@ export default function TemplatesIndex() {
                                 'Styled for every industry',
                                 'Built to match hiring norms by country',
                                 'ATS-safe options marked clearly',
-                            ].map((item) => (
-                                <li key={item} className="flex items-center gap-2">
+                            ].map((item, index) => (
+                                <motion.li
+                                    key={item}
+                                    className="flex items-center gap-2"
+                                    initial={
+                                        reduceMotion
+                                            ? false
+                                            : { opacity: 0, x: -10 }
+                                    }
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{
+                                        delay: 0.12 + index * 0.06,
+                                        duration: 0.4,
+                                    }}
+                                >
                                     <span className="text-lp-gold flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[0.65rem] font-semibold">
                                         ✓
                                     </span>
                                     {item}
-                                </li>
+                                </motion.li>
                             ))}
                         </ul>
-                    </div>
-                    <div className="hidden justify-end md:flex">
-                        <img
+                    </FadeIn>
+                    <FadeIn
+                        delay={0.12}
+                        className="hidden justify-end md:flex"
+                    >
+                        <motion.img
                             src="/images/launchpad/templates/executive.png"
                             alt="Executive CV template preview"
                             className="w-full max-w-[240px] rounded-xl border border-white/10 shadow-2xl"
                             loading="lazy"
+                            animate={
+                                reduceMotion
+                                    ? undefined
+                                    : { y: [0, -8, 0] }
+                            }
+                            transition={
+                                reduceMotion
+                                    ? undefined
+                                    : {
+                                        duration: 5,
+                                        repeat: Infinity,
+                                        ease: 'easeInOut',
+                                    }
+                            }
                         />
-                    </div>
+                    </FadeIn>
                 </div>
             </section>
 
             <section className="py-8 sm:py-10">
                 <div className="container">
                     <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-                        <FilterSidebar
-                            filters={filters}
-                            onChange={setFilters}
-                            onReset={() => setFilters(defaultFilters)}
-                        />
+                        <Reveal direction="left">
+                            <FilterSidebar
+                                filters={filters}
+                                onChange={setFilters}
+                                onReset={() => setFilters(defaultFilters)}
+                            />
+                        </Reveal>
                         <div className="min-w-0">
                             {filtered.length === 0 ? (
                                 <p className="text-lp-light py-16 text-center text-sm">
@@ -125,14 +174,16 @@ export default function TemplatesIndex() {
                                     all.
                                 </p>
                             ) : (
-                                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                                <Stagger
+                                    className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
+                                    stagger={0.05}
+                                >
                                     {filtered.map((template) => (
-                                        <TemplateCard
-                                            key={template.id}
-                                            template={template}
-                                        />
+                                        <StaggerItem key={template.id}>
+                                            <TemplateCard template={template} />
+                                        </StaggerItem>
                                     ))}
-                                </div>
+                                </Stagger>
                             )}
                         </div>
                     </div>
