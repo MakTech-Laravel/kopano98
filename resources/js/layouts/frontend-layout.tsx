@@ -1,18 +1,12 @@
-import * as React from 'react';
+import type { ReactNode } from 'react';
 
-import { FrontendFooter } from '@/layouts/partials/frontend/footer';
-import { FrontendHeader } from '@/layouts/partials/frontend/header';
+import LaunchpadLayout from '@/layouts/launchpad-layout';
 
 interface FrontendLayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
+/** @deprecated Prefer LaunchpadLayout directly on public pages. */
 export default function FrontendLayout({ children }: FrontendLayoutProps) {
-    return (
-        <div className="flex min-h-screen flex-col">
-            <FrontendHeader />
-            <main className="flex-1 flex flex-col">{children}</main>
-            <FrontendFooter />
-        </div>
-    );
+    return <LaunchpadLayout>{children}</LaunchpadLayout>;
 }

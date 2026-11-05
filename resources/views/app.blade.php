@@ -31,11 +31,18 @@
         }
     </style>
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia>{{ config('app.name', 'Launchpad Careers') }}</title>
 
-    {{-- <link rel="icon" href="/favicon.ico" sizes="any"> --}}
+    <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    {{-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"> --}}
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <meta name="theme-color" content="#1a2332">
+    <meta name="description" content="Free ATS CV checker, professional CV rewrites, LinkedIn profile fixes, and career coaching — Launchpad Careers.">
+    <meta property="og:site_name" content="Launchpad Careers">
+    <meta property="og:image" content="{{ url('/og-image.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ url('/og-image.png') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

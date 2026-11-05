@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Lora:ital,wght@0,400..700;1,400..700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Lora:ital,wght@0,400..700;1,400..700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 
 @import 'tailwindcss';
 @import 'tw-animate-css';
@@ -505,4 +505,164 @@
 
 .animate-fade-in-delay-2 {
   animation: fadeIn 0.8s ease-out 0.4s both;
+}
+
+/*
+ * Project container: centered, responsive max-widths (sm→2xl), horizontal gutters.
+ * Use: className="container"
+ */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 100%;
+
+  @media (width >= 40rem) {
+    max-width: 40rem; /* sm */
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 48rem) {
+    max-width: 48rem; /* md */
+  }
+
+  @media (width >= 64rem) {
+    max-width: 64rem; /* lg */
+  }
+
+  @media (width >= 80rem) {
+    max-width: 80rem; /* xl */
+  }
+
+  @media (width >= 96rem) {
+    max-width: 96rem; /* 2xl */
+  }
+}
+
+/*
+ * Launchpad Careers — human-made palette/type
+ * Avoids Inter+Playfair / shiny gold / cool grey “AI SaaS” defaults.
+ * Ink navy + muted brass + paper ground; Instrument Serif + DM Sans.
+ */
+.launchpad {
+  --lp-navy: #1a2332;
+  --lp-navy-2: #243041;
+  --lp-navy-3: #334155;
+  --lp-gold: #b8943f;
+  --lp-gold-2: #c9a85a;
+  --lp-gold-on-light: #8f7330;
+  --lp-gold-on-light-sm: #74602a;
+  --lp-off: #f3f2ef;
+  --lp-paper: #fffcf7;
+  --lp-text: #1c2430;
+  --lp-text-mid: #5a6170;
+  --lp-text-light: #7d8490;
+  --lp-border: #e4e2dc;
+  --lp-green: #3d7a55;
+  --font-lp-display: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-lp-sans: 'DM Sans', 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+  color: var(--lp-text);
+  font-family: var(--font-lp-sans);
+  font-optical-sizing: auto;
+  background: var(--lp-paper);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+.launchpad .font-lp-display {
+  font-family: var(--font-lp-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.launchpad h1.font-lp-display,
+.launchpad h2.font-lp-display,
+.launchpad .font-lp-display.font-bold,
+.launchpad .font-lp-display.font-semibold,
+.launchpad .font-lp-display.font-extrabold,
+.launchpad .font-lp-display.font-black {
+  font-weight: 400;
+}
+
+.launchpad .bg-lp-navy {
+  background-color: var(--lp-navy);
+}
+
+.launchpad .bg-lp-navy-2 {
+  background-color: var(--lp-navy-2);
+}
+
+.launchpad .bg-lp-gold {
+  background-color: var(--lp-gold);
+}
+
+.launchpad .bg-lp-off {
+  background-color: var(--lp-off);
+}
+
+.launchpad .text-lp-navy {
+  color: var(--lp-navy);
+}
+
+.launchpad .text-lp-gold {
+  color: var(--lp-gold);
+}
+
+.launchpad .text-lp-mid {
+  color: var(--lp-text-mid);
+}
+
+.launchpad .text-lp-light {
+  color: var(--lp-text-light);
+}
+
+.launchpad .border-lp {
+  border-color: var(--lp-border);
+}
+
+.launchpad .btn-lp-gold {
+  background: var(--lp-gold);
+  color: var(--lp-navy);
+  font-weight: 600;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.launchpad .btn-lp-gold:hover {
+  background: var(--lp-gold-2);
+}
+
+.launchpad .btn-lp-navy {
+  background: var(--lp-navy);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+  transition: background-color 0.15s ease;
+}
+
+.launchpad .btn-lp-navy:hover {
+  background: var(--lp-navy-2);
+}
+
+@keyframes lpHiredSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.launchpad .lp-hired-track {
+  display: flex;
+  width: max-content;
+  animation: lpHiredSlide 110s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launchpad .lp-hired-track {
+    animation: none;
+  }
 }
