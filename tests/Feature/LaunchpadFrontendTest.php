@@ -3,13 +3,13 @@
 it('renders the launchpad home page', function () {
     $this->get(route('home'))
         ->assertOk()
-        ->assertInertia(fn($page) => $page->component('frontend/home'));
+        ->assertInertia(fn ($page) => $page->component('frontend/home'));
 });
 
 it('renders public launchpad pages', function (string $routeName, string $component) {
     $this->get(route($routeName))
         ->assertOk()
-        ->assertInertia(fn($page) => $page->component($component));
+        ->assertInertia(fn ($page) => $page->component($component));
 })->with([
     'tools' => ['tools', 'frontend/tools/index'],
     'services' => ['services', 'frontend/services/index'],
@@ -17,5 +17,6 @@ it('renders public launchpad pages', function (string $routeName, string $compon
     'about' => ['about', 'frontend/about'],
     'contact' => ['contact', 'frontend/contact'],
     'terms' => ['terms', 'frontend/terms'],
+    'checkout' => ['checkout', 'frontend/checkout'],
     'thank-you' => ['thank-you', 'frontend/thank-you'],
 ]);

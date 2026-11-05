@@ -86,6 +86,4 @@ export const launchpadServices: LaunchpadService[] = [
     },
 ];
 
-export function formatZar(amount: number): string {
-    return `R${amount.toLocaleString('en-ZA')}`;
-}
+export { formatZar } from '@/data/launchpad/currencies';

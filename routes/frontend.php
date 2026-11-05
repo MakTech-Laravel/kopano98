@@ -10,4 +10,5 @@ Route::get('/templates', [FrontendController::class, 'templates'])->name('templa
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::get('/terms', [FrontendController::class, 'terms'])->name('terms');
+Route::get('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
 Route::get('/thank-you', [FrontendController::class, 'thankYou'])->name('thank-you');

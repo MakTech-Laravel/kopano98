@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { LaunchpadHero } from '@/components/launchpad/hero';
 import { Reveal } from '@/components/launchpad/reveal';
 import { SectionHeading } from '@/components/launchpad/section-heading';
+import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
 import { launchpadFaqs } from '@/data/launchpad/faqs';
-import { formatZar, launchpadServices } from '@/data/launchpad/services';
+import { launchpadServices } from '@/data/launchpad/services';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
 
 const stats = [
@@ -50,7 +51,7 @@ const howSteps = [
     },
     {
         title: 'Place your order',
-        body: 'Add to cart from Services. Secure checkout connects in Milestone 2; UI cart works now.',
+        body: 'Add to cart from Services, then check out in your local currency via Payfast (SA) or Paddle (international).',
     },
     {
         title: 'Message us on WhatsApp',
@@ -63,7 +64,16 @@ const howSteps = [
 ];
 
 export default function Home() {
+    return (
+        <LaunchpadLayout>
+            <HomeContent />
+        </LaunchpadLayout>
+    );
+}
+
+function HomeContent() {
     const [openFaq, setOpenFaq] = useState<number | null>(0);
+    const { formatPrice, gatewayName, currencyCode } = useLaunchpadLocale();
     const previewServices = launchpadServices.filter((service) =>
         ['cv-rewrite-mid', 'linkedin-fix', 'interview-prep', 'career-kit'].includes(
             service.id,
@@ -71,7 +81,7 @@ export default function Home() {
     );
 
     return (
-        <LaunchpadLayout>
+        <>
             <Head title="Free ATS CV Checker | Launchpad Careers">
                 <meta
                     head-key="description"
@@ -96,8 +106,8 @@ export default function Home() {
                         <div
                             key={stat.lbl}
                             className={`px-3 py-4 text-center ${index % 2 === 0
-                                    ? 'border-r border-[var(--lp-navy-3)]'
-                                    : ''
+                                ? 'border-r border-[var(--lp-navy-3)]'
+                                : ''
                                 } ${index < 2
                                     ? 'border-b border-[var(--lp-navy-3)] md:border-b-0'
                                     : ''
@@ -209,7 +219,7 @@ export default function Home() {
                         <SectionHeading
                             label="Services"
                             title="From a quick CV fix to a full career kit."
-                            subtitle="Human-written deliverables. Transparent ZAR pricing."
+                            subtitle={`Human-written deliverables. Prices shown in ${currencyCode}; checkout via ${gatewayName}.`}
                         />
                     </Reveal>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -223,7 +233,7 @@ export default function Home() {
                                         {service.description}
                                     </p>
                                     <p className="font-lp-display mt-3 text-[1.25rem] text-[var(--lp-gold-on-light)]">
-                                        {formatZar(service.price)}
+                                        {formatPrice(service.price)}
                                     </p>
                                 </div>
                             </Reveal>
@@ -310,6 +320,6 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-        </LaunchpadLayout>
+        </>
     );
 }

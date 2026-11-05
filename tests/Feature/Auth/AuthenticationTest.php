@@ -22,6 +22,41 @@ test('users can authenticate using the login screen', function () {
     $response->assertRedirect(route('dashboard', absolute: false));
 });
 
+test('login page shares enabled fortify auth features', function () {
+    $this->get(route('login'))
+        ->assertOk()
+        ->assertInertia(fn($page) => $page
+            ->component('auth/login')
+            ->where('features.canRegister', true)
+            ->where('features.canResetPassword', true)
+            ->where('features.canVerifyEmail', true)
+            ->where('features.canUseTwoFactorAuthentication', true));
+});
+
+test('verified users reach the dashboard after login', function () {
+    $user = User::factory()->create();
+
+    $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+        'remember' => '1',
+    ])->assertRedirect(route('dashboard', absolute: false));
+
+    $this->get(route('dashboard'))->assertOk();
+});
+
+test('unverified users are sent to email verification after login', function () {
+    $user = User::factory()->unverified()->create();
+
+    $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ])->assertRedirect(route('dashboard', absolute: false));
+
+    $this->get(route('dashboard'))
+        ->assertRedirect(route('verification.notice'));
+});
+
 test('users with two factor enabled are redirected to two factor challenge', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
         $this->markTestSkipped('Two-factor authentication is not enabled.');
@@ -73,7 +108,7 @@ test('users can logout', function () {
 test('users are rate limited', function () {
     $user = User::factory()->create();
 
-    RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);
+    RateLimiter::increment(md5('login' . implode('|', [$user->email, '127.0.0.1'])), amount: 5);
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,

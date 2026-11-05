@@ -1,13 +1,13 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ShoppingBag, X } from 'lucide-react';
-import { toast } from 'sonner';
 
 import { useLaunchpadCart } from '@/contexts/launchpad-cart';
-import { formatZar } from '@/data/launchpad/services';
+import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
 
 export function CartDrawer() {
-    const { items, isOpen, total, closeCart, removeItem, clearCart } =
-        useLaunchpadCart();
+    const { items, isOpen, total, closeCart, removeItem } = useLaunchpadCart();
+    const { formatPrice, formatBaseZar, currencyCode, gatewayName } =
+        useLaunchpadLocale();
 
     if (!isOpen) {
         return null;
@@ -58,7 +58,7 @@ export function CartDrawer() {
                                         </p>
                                         <p className="text-lp-light text-xs">
                                             Qty {item.quantity} ·{' '}
-                                            {formatZar(item.price)}
+                                            {formatPrice(item.price)}
                                         </p>
                                     </div>
                                     <button
@@ -75,23 +75,29 @@ export function CartDrawer() {
                 </div>
 
                 <div className="border-t border-[var(--lp-border)] px-6 py-4">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-1 flex items-center justify-between">
                         <span className="text-lp-mid text-sm">Total</span>
                         <span className="font-lp-display text-lp-navy text-2xl">
-                            {formatZar(total)}
+                            {formatPrice(total)}
                         </span>
                     </div>
+                    {currencyCode !== 'ZAR' ? (
+                        <p className="text-lp-light mb-3 text-right text-[0.7rem]">
+                            Base {formatBaseZar(total)}
+                        </p>
+                    ) : (
+                        <div className="mb-3" />
+                    )}
+                    <p className="text-lp-mid mb-3 text-[0.7rem]">
+                        Checkout via {gatewayName} · prices in {currencyCode}
+                    </p>
                     <button
                         type="button"
                         className="btn-lp-gold mb-2 w-full py-3 text-sm disabled:opacity-40"
                         disabled={items.length === 0}
                         onClick={() => {
-                            toast.message('Checkout coming in Milestone 2', {
-                                description:
-                                    'This Milestone 1 UI mocks cart only — no payment yet.',
-                            });
-                            clearCart();
                             closeCart();
+                            router.visit('/checkout');
                         }}
                     >
                         Checkout

@@ -2,6 +2,7 @@ import {
     createContext,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useState,
     type ReactNode,
@@ -29,11 +30,47 @@ type LaunchpadCartContextValue = {
     clearCart: () => void;
 };
 
+const CART_STORAGE_KEY = 'launchpad.cart.v1';
+
 const LaunchpadCartContext = createContext<LaunchpadCartContextValue | null>(null);
+
+function readStoredCart(): CartItem[] {
+    if (typeof window === 'undefined') {
+        return [];
+    }
+
+    try {
+        const raw = window.localStorage.getItem(CART_STORAGE_KEY);
+
+        if (!raw) {
+            return [];
+        }
+
+        const parsed = JSON.parse(raw) as CartItem[];
+
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
 
 export function LaunchpadCartProvider({ children }: { children: ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [hydrated, setHydrated] = useState(false);
+
+    useEffect(() => {
+        setItems(readStoredCart());
+        setHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        if (!hydrated) {
+            return;
+        }
+
+        window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    }, [items, hydrated]);
 
     const openCart = useCallback(() => setIsOpen(true), []);
     const closeCart = useCallback(() => setIsOpen(false), []);

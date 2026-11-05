@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
@@ -74,7 +76,7 @@ class User extends Authenticatable
                     return $storedName;
                 }
 
-                $composed = trim(($attributes['first_name'] ?? '').' '.($attributes['last_name'] ?? ''));
+                $composed = trim(($attributes['first_name'] ?? '') . ' ' . ($attributes['last_name'] ?? ''));
 
                 return $composed !== '' ? $composed : ($attributes['email'] ?? '');
             },
@@ -123,11 +125,9 @@ class User extends Authenticatable
         }
 
         if ($this->avatar) {
-            return asset('storage/'.$this->avatar);
+            return asset('storage/' . $this->avatar);
         }
 
         return null;
     }
-
-  
 }

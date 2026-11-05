@@ -1,10 +1,8 @@
 import { toast } from 'sonner';
 
 import { useLaunchpadCart } from '@/contexts/launchpad-cart';
-import {
-    formatZar,
-    type LaunchpadService,
-} from '@/data/launchpad/services';
+import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
+import type { LaunchpadService } from '@/data/launchpad/services';
 
 type ServiceCardProps = {
     service: LaunchpadService;
@@ -12,6 +10,7 @@ type ServiceCardProps = {
 
 export function ServiceCard({ service }: ServiceCardProps) {
     const { addService } = useLaunchpadCart();
+    const { formatPrice, formatBaseZar, currencyCode } = useLaunchpadLocale();
 
     return (
         <article
@@ -45,11 +44,16 @@ export function ServiceCard({ service }: ServiceCardProps) {
             </ul>
             <div className="mt-auto">
                 <p className="font-lp-display text-[1.4rem] text-[var(--lp-gold-on-light)]">
-                    {formatZar(service.price)}{' '}
+                    {formatPrice(service.price)}{' '}
                     <span className="font-[family-name:var(--font-lp-sans)] text-[0.72rem] font-normal text-[var(--lp-text-light)]">
                         once-off
                     </span>
                 </p>
+                {currencyCode !== 'ZAR' ? (
+                    <p className="text-lp-light text-[0.68rem]">
+                        Base {formatBaseZar(service.price)}
+                    </p>
+                ) : null}
                 <p className="text-lp-light mt-0.5 text-[0.7rem]">
                     {service.eta}
                 </p>

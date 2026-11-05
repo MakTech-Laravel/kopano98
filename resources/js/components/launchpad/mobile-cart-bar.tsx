@@ -1,8 +1,9 @@
 import { useLaunchpadCart } from '@/contexts/launchpad-cart';
-import { formatZar } from '@/data/launchpad/services';
+import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
 
 export function MobileCartBar() {
     const { itemCount, total, openCart } = useLaunchpadCart();
+    const { formatPrice } = useLaunchpadLocale();
 
     if (itemCount === 0) {
         return null;
@@ -19,7 +20,9 @@ export function MobileCartBar() {
                     <span>
                         View Cart · {itemCount} item{itemCount === 1 ? '' : 's'}
                     </span>
-                    <span className="shrink-0 font-semibold">{formatZar(total)}</span>
+                    <span className="shrink-0 font-semibold">
+                        {formatPrice(total)}
+                    </span>
                 </button>
             </div>
         </div>

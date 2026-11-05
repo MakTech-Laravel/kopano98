@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import { useState } from 'react';
 
+import { CurrencySwitcher } from '@/components/launchpad/currency-switcher';
 import { useLaunchpadCart } from '@/contexts/launchpad-cart';
 import { launchpadMobileNav, launchpadNav } from '@/data/launchpad/nav';
 
@@ -34,8 +35,8 @@ export function LaunchpadHeader() {
                             key={item.href}
                             href={item.href}
                             className={`rounded px-2.5 py-2 text-[0.78rem] font-medium transition xl:px-3 xl:text-[0.8rem] ${isActive(item.href)
-                                    ? 'text-lp-gold'
-                                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                                ? 'text-lp-gold'
+                                : 'text-white/70 hover:bg-white/10 hover:text-white'
                                 }`}
                         >
                             {item.label}
@@ -44,6 +45,7 @@ export function LaunchpadHeader() {
                 </div>
 
                 <div className="flex items-center gap-1">
+                    <CurrencySwitcher />
                     <button
                         type="button"
                         onClick={openCart}
@@ -88,8 +90,8 @@ export function LaunchpadHeader() {
                                 href={item.href}
                                 onClick={() => setMobileOpen(false)}
                                 className={`rounded px-2 py-2.5 text-sm ${isActive(item.href)
-                                        ? 'text-lp-gold'
-                                        : 'text-white/80'
+                                    ? 'text-lp-gold'
+                                    : 'text-white/80'
                                     }`}
                             >
                                 {item.label}

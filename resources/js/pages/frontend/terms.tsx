@@ -26,9 +26,10 @@ export default function Terms() {
                             </p>
                             <p>
                                 Free tools on this site are provided as-is for guidance.
-                                They do not replace professional advice. Live AI
-                                processing and payments are being connected in later
-                                milestones of this rebuild.
+                                They do not replace professional advice. Checkout shows
+                                Payfast for South African customers and Paddle for
+                                international customers with local-currency pricing.
+                                Live payment processing connects in the next milestone.
                             </p>
                             <p>
                                 For questions:{' '}

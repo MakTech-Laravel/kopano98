@@ -43,6 +43,11 @@ class FrontendController extends Controller
         return Inertia::render('frontend/terms');
     }
 
+    public function checkout(): Response
+    {
+        return Inertia::render('frontend/checkout');
+    }
+
     public function thankYou(): Response
     {
         return Inertia::render('frontend/thank-you');

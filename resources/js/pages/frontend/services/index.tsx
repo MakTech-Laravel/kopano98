@@ -27,8 +27,9 @@ export default function ServicesIndex() {
                         Professional career services
                     </h1>
                     <p className="mx-auto mt-3 max-w-lg text-sm text-pretty text-white/70">
-                        Add items to your cart — checkout payment connects in
-                        Milestone 2. Prices in ZAR.
+                        Prices adapt to your region. South Africa checks out with
+                        Payfast; international visitors use Paddle — live charging
+                        connects next milestone.
                     </p>
                 </div>
             </section>
