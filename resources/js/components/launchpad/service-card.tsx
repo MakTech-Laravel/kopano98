@@ -43,7 +43,7 @@ export function ServiceCard({
             ) : null}
 
             <div
-                className={`px-4 pt-4 pb-3 ${isPackage
+                className={`px-5 pt-5 pb-4 text-center ${isPackage
                     ? 'bg-lp-navy text-white'
                     : 'bg-[linear-gradient(160deg,var(--lp-navy)_0%,var(--lp-navy-2)_100%)] text-white'
                     }`}
@@ -53,15 +53,15 @@ export function ServiceCard({
                         {service.badge}
                     </p>
                 ) : null}
-                <h3 className="font-lp-display text-[1.35rem] leading-tight text-white">
+                <h3 className="font-lp-display text-[1.25rem] leading-tight text-white sm:text-[1.35rem]">
                     {service.name.replace(/^CV Rewrite — |^LinkedIn Profile Fix — /, '')}
                 </h3>
-                <p className="mt-1.5 text-[0.75rem] leading-relaxed text-white/65">
+                <p className="mx-auto mt-1.5 max-w-[18rem] text-[0.75rem] leading-relaxed text-white/65">
                     {service.description}
                 </p>
             </div>
 
-            <div className="flex flex-1 flex-col p-4">
+            <div className="flex flex-1 flex-col px-5 py-4">
                 <ul className="mb-4 space-y-2">
                     {service.features.map((feature) => (
                         <li

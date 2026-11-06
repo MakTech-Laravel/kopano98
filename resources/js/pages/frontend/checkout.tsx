@@ -6,6 +6,7 @@ import { Reveal } from '@/components/launchpad/reveal';
 import { SectionHeading } from '@/components/launchpad/section-heading';
 import { useLaunchpadCart } from '@/contexts/launchpad-cart';
 import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
+import { countryOptionsForSelect } from '@/data/launchpad/countries';
 import {
     gatewayBlurb,
     gatewayLabel,
@@ -14,7 +15,10 @@ import {
 import LaunchpadLayout from '@/layouts/launchpad-layout';
 import {
     createOrderReference,
+    openPaddleOverlay,
     saveCheckoutOrder,
+    submitPayfastForm,
+    type CheckoutOrderResponse,
 } from '@/lib/launchpad/checkout-order';
 
 type CheckoutFormState = {
@@ -103,11 +107,88 @@ function CheckoutContent() {
 
         saveCheckoutOrder(order);
 
-        window.setTimeout(() => {
-            clearCart();
-            toast.success(`UI checkout complete via ${gatewayLabel(selectedGateway)}`);
-            router.visit('/thank-you');
-        }, 700);
+        const csrf =
+            (
+                window.document.querySelector(
+                    'meta[name="csrf-token"]',
+                ) as HTMLMetaElement | null
+            )?.content ?? '';
+
+        void fetch('/checkout/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrf,
+            },
+            body: JSON.stringify({
+                reference: order.reference,
+                customer_name: order.customer.name,
+                customer_email: order.customer.email,
+                customer_phone: order.customer.phone,
+                country_code: order.customer.countryCode,
+                currency_code: order.currencyCode,
+                gateway: order.gateway,
+                items: items.map((item) => ({
+                    service_id: item.id,
+                    quantity: item.quantity,
+                })),
+            }),
+        })
+            .then(async (response) => {
+                if (!response.ok) {
+                    const errorBody = (await response.json().catch(() => null)) as
+                        | { message?: string; errors?: Record<string, string[]> }
+                        | null;
+                    const firstError = errorBody?.errors
+                        ? Object.values(errorBody.errors)[0]?.[0]
+                        : null;
+                    throw new Error(firstError || errorBody?.message || 'Order create failed');
+                }
+
+                const payload = (await response.json()) as CheckoutOrderResponse;
+
+                clearCart();
+
+                if (
+                    payload.gateway === 'payfast' &&
+                    payload.payfast?.action &&
+                    payload.payfast.form
+                ) {
+                    toast.success('Redirecting to Payfast');
+                    submitPayfastForm(payload.payfast.action, payload.payfast.form);
+
+                    return;
+                }
+
+                if (payload.gateway === 'paddle' && payload.paddle?.overlay) {
+                    const opened = await openPaddleOverlay(payload.paddle.overlay);
+
+                    if (opened) {
+                        toast.success('Opening Paddle checkout');
+
+                        return;
+                    }
+                }
+
+                toast.success(
+                    payload.payments_configured
+                        ? 'Order created — complete payment when the gateway is ready'
+                        : `Order ${payload.reference} saved. Add gateway keys to charge live.`,
+                );
+                router.visit(
+                    `/thank-you?reference=${encodeURIComponent(payload.reference)}`,
+                );
+            })
+            .catch((error: unknown) => {
+                const message =
+                    error instanceof Error
+                        ? error.message
+                        : 'Could not create order';
+                toast.error(message);
+            })
+            .finally(() => setSubmitting(false));
     };
 
     return (
@@ -130,9 +211,9 @@ function CheckoutContent() {
                         Pay in your local currency
                     </h1>
                     <p className="mx-auto mt-3 max-w-lg text-sm text-pretty text-white/70">
-                        Detected region: {countryName}. SA customers use Payfast;
-                        international customers use Paddle. Live gateway charge
-                        connects next milestone — this page completes the UI flow.
+                        Detected region: {countryName}. South Africa, Namibia and
+                        Botswana check out with Payfast; other countries use
+                        Paddle. Totals stay locked to your selected currency.
                     </p>
                 </div>
             </section>
@@ -145,7 +226,7 @@ function CheckoutContent() {
                                 <SectionHeading
                                     label="Cart"
                                     title="Nothing to check out yet."
-                                    subtitle="Add a service, then return here to complete the UI payment flow."
+                                    subtitle="Add a service, then return here to complete secure checkout."
                                 />
                                 <Link
                                     href="/services"
@@ -236,16 +317,16 @@ function CheckoutContent() {
                                                 }
                                                 className="text-lp-navy mt-1 w-full rounded-md border border-[var(--lp-border)] bg-white px-3 py-2.5 text-sm outline-none focus:border-[var(--lp-navy)]"
                                             >
-                                                <option value="ZA">South Africa</option>
-                                                <option value="US">United States</option>
-                                                <option value="GB">United Kingdom</option>
-                                                <option value="DE">Germany</option>
-                                                <option value="AU">Australia</option>
-                                                <option value="CA">Canada</option>
-                                                <option value="IN">India</option>
-                                                <option value="NG">Nigeria</option>
-                                                <option value="KE">Kenya</option>
-                                                <option value="AE">United Arab Emirates</option>
+                                                {countryOptionsForSelect().map(
+                                                    (country) => (
+                                                        <option
+                                                            key={country.code}
+                                                            value={country.code}
+                                                        >
+                                                            {country.name}
+                                                        </option>
+                                                    ),
+                                                )}
                                             </select>
                                         </label>
                                     </div>

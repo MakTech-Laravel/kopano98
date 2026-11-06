@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
                     return $storedName;
                 }
 
-                $composed = trim(($attributes['first_name'] ?? '') . ' ' . ($attributes['last_name'] ?? ''));
+                $composed = trim(($attributes['first_name'] ?? '').' '.($attributes['last_name'] ?? ''));
 
                 return $composed !== '' ? $composed : ($attributes['email'] ?? '');
             },
@@ -125,7 +125,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         return null;
