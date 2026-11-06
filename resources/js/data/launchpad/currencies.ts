@@ -28,8 +28,8 @@ export type RegionProfile = {
 };
 
 /**
- * Base catalogue prices stay in ZAR. These rates are UI estimates so
- * international visitors see local-looking amounts before Milestone 2 billing.
+ * Base catalogue prices stay in ZAR. Display rates are estimates until live FX
+ * is connected; Payfast always charges the ZAR catalogue total.
  */
 export const launchpadCurrencies: Record<LaunchpadCurrencyCode, LaunchpadCurrency> = {
     ZAR: { code: 'ZAR', label: 'South African Rand', fromZar: 1, locale: 'en-ZA' },

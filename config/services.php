@@ -41,4 +41,18 @@ return [
         'base_url' => env('WHEN_I_WORK_BASE_URL', 'https://api.wheniwork.com/2/'),
     ],
 
+    'payfast' => [
+        'merchant_id' => env('PAYFAST_MERCHANT_ID'),
+        'merchant_key' => env('PAYFAST_MERCHANT_KEY'),
+        'passphrase' => env('PAYFAST_PASSPHRASE'),
+        'host' => env('PAYFAST_HOST', 'https://sandbox.payfast.co.za'),
+    ],
+
+    'paddle' => [
+        'api_key' => env('PADDLE_API_KEY'),
+        'client_token' => env('PADDLE_CLIENT_TOKEN'),
+        'price_id' => env('PADDLE_PRICE_ID'),
+        'webhook_secret' => env('PADDLE_WEBHOOK_SECRET'),
+    ],
+
 ];

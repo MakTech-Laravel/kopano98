@@ -39,7 +39,7 @@ export default function About() {
             <Head title="About | Launchpad Careers" />
 
             <section className="py-10 sm:py-12">
-                <div className="container max-w-[1000px]">
+                <div className="container">
                     <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
                         <FadeIn className="w-full max-w-[300px] shrink-0">
                             <motion.img

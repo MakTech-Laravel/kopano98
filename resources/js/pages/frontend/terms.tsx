@@ -37,10 +37,9 @@ export default function Terms() {
                                 <p>
                                     Free tools on this site are provided as-is for
                                     guidance. They do not replace professional advice.
-                                    Checkout shows Payfast for South African customers
-                                    and Paddle for international customers with
-                                    local-currency pricing. Live payment processing
-                                    connects in the next milestone.
+                                    Checkout uses Payfast for South African customers
+                                    (and Namibia/Botswana) and Paddle for international
+                                    customers, with local-currency display pricing.
                                 </p>
                             </Reveal>
                             <Reveal delay={0.2}>

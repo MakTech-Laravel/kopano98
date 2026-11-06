@@ -61,8 +61,8 @@ function ThankYouContent() {
                             </h1>
                             <p className="text-lp-mid mt-3 text-sm leading-relaxed text-pretty">
                                 {order
-                                    ? `We saved your UI checkout for ${order.customer.name}. Live ${gatewayLabel(order.gateway)} charging and confirmation emails connect in the next milestone.`
-                                    : 'Your post-checkout confirmation shell is ready. Complete checkout from the cart to see order details here.'}
+                                    ? `Thanks ${order.customer.name}. Your order ${order.reference} is recorded for ${gatewayLabel(order.gateway)}. If live payment keys are configured, charging happens at the gateway; otherwise the order is saved for fulfilment follow-up.`
+                                    : 'Complete checkout from the cart to see your order details here.'}
                             </p>
                         </FadeIn>
 

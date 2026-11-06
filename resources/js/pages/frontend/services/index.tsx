@@ -48,7 +48,7 @@ export default function ServicesIndex() {
                                     />
                                 </Reveal>
                                 {group.id === 'linkedin' ? (
-                                    <p className="text-lp-mid mb-5 max-w-3xl text-[0.82rem] leading-relaxed">
+                                    <p className="text-lp-mid mb-5 max-w-3xl text-[0.82rem] leading-relaxed sm:mx-auto sm:text-center">
                                         Your LinkedIn profile and your CV get
                                         checked against each other. One tells a
                                         strong story, the other reinforces it —

@@ -43,7 +43,7 @@ export function writeStoredRegion(value: StoredRegion): void {
 
 /**
  * Soft geo lookup for UI pricing. Falls back to browser locale, then ZA.
- * Real IP/geo + billing sync lands with payment backends next milestone.
+ * Client geo via ipapi.co with locale fallback; checkout uses the selected country.
  */
 export async function detectRegionProfile(): Promise<RegionProfile> {
     const stored = readStoredRegion();

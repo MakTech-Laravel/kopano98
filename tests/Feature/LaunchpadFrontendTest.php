@@ -14,6 +14,7 @@ it('renders public launchpad pages', function (string $routeName, string $compon
     'tools' => ['tools', 'frontend/tools/index'],
     'services' => ['services', 'frontend/services/index'],
     'templates' => ['templates', 'frontend/templates/index'],
+    'templates.builder' => ['templates.builder', 'frontend/templates/builder'],
     'about' => ['about', 'frontend/about'],
     'contact' => ['contact', 'frontend/contact'],
     'terms' => ['terms', 'frontend/terms'],
