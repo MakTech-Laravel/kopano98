@@ -12,6 +12,7 @@
 /vendor
 .DS_Store
 .env
+temp_auto_push.bat
 .env.backup
 .env.production
 .phpactor.json
@@ -24,6 +25,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.nova
-/.vscode
 /_client-brief
 
+.gitignore
+branch_structure.json
