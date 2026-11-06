@@ -2,10 +2,12 @@ import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 
 import { AtsShowcaseSection } from '@/components/launchpad/ats-showcase-section';
+import { CompanyLogosSection } from '@/components/launchpad/company-logos-section';
+import { CvTemplateSlider } from '@/components/launchpad/cv-template-slider';
 import { LaunchpadHero } from '@/components/launchpad/hero';
 import { Reveal } from '@/components/launchpad/reveal';
 import { SectionHeading } from '@/components/launchpad/section-heading';
-import { TransformationSection } from '@/components/launchpad/transformation-section';
+import { ServiceVisualCards } from '@/components/launchpad/service-visual-cards';
 import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
 import { launchpadFaqs } from '@/data/launchpad/faqs';
 import { launchpadServices } from '@/data/launchpad/services';
@@ -17,15 +19,6 @@ const stats = [
     { num: '78%', lbl: 'Avg. ATS lift' },
     { num: '48h', lbl: 'Typical turnaround' },
     { num: 'ZA+', lbl: 'Clients worldwide' },
-];
-
-const hired = [
-    'Thabo · Hired at Discovery',
-    'Aisha · Offer from Deloitte',
-    'Lebo · Role at Absa',
-    'Nomsa · Contract at Amazon',
-    'Sipho · Graduate intake',
-    'Priya · Product role',
 ];
 
 const whyCards = [
@@ -126,24 +119,8 @@ function HomeContent() {
                 </div>
             </div>
 
-            <div className="bg-lp-navy-2 overflow-hidden py-4">
-                <p className="mb-3 text-center text-[0.72rem] font-bold tracking-wider text-white/55 uppercase">
-                    Recently placed
-                </p>
-                <div className="lp-hired-track gap-0">
-                    {[...hired, ...hired].map((item, index) => (
-                        <span
-                            key={`${item}-${index}`}
-                            className="px-6 text-sm font-bold whitespace-nowrap text-white/80 sm:px-10 sm:text-[1.05rem]"
-                        >
-                            {item}
-                            <span className="bg-lp-gold ml-6 inline-block h-1.5 w-1.5 rounded-full align-middle sm:ml-10" />
-                        </span>
-                    ))}
-                </div>
-            </div>
-
-            <TransformationSection />
+            <CompanyLogosSection />
+            <CvTemplateSlider />
             <AtsShowcaseSection />
 
             <section className="py-10 sm:py-12">
@@ -242,56 +219,7 @@ function HomeContent() {
                             subtitle="Try the ATS checker and career tools with no payment. Professional services stay one click away."
                         />
                     </Reveal>
-                    <div className="grid gap-4 md:grid-cols-3">
-                        {[
-                            {
-                                title: 'ATS CV Checker',
-                                body: 'Upload a CV and see a sample match score — live parsing lands in Milestone 2.',
-                                href: '/tools',
-                                image: '/images/launchpad/tools/ats-checker.jpg',
-                                alt: 'Deep Scan ATS checker showing live score, issues, and highlighted CV',
-                            },
-                            {
-                                title: 'LinkedIn preview',
-                                body: 'Explore headline and About improvements before you order a full profile fix.',
-                                href: '/tools',
-                                image: '/images/launchpad/tools/linkedin-preview.jpg',
-                                alt: 'Professional preparing a polished LinkedIn profile',
-                            },
-                            {
-                                title: 'Cover letter shell',
-                                body: 'Draft structure ready for role-specific generation later.',
-                                href: '/tools',
-                                image: '/images/launchpad/tools/cover-letter.jpg',
-                                alt: 'Professional drafting a cover letter at a desk',
-                            },
-                        ].map((tool, index) => (
-                            <Reveal key={tool.title} delay={index * 0.05}>
-                                <Link
-                                    href={tool.href}
-                                    className="group block h-full overflow-hidden rounded-[10px] border border-[var(--lp-border)] bg-white transition hover:border-[var(--lp-navy-3)] hover:shadow-[0_12px_28px_rgba(13,27,42,0.08)]"
-                                >
-                                    <div className="aspect-[16/10] overflow-hidden bg-[var(--lp-off)]">
-                                        <img
-                                            src={tool.image}
-                                            alt={tool.alt}
-                                            className="h-full w-full object-cover object-center transition duration-700 ease-out group-hover:scale-[1.05]"
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                    </div>
-                                    <div className="p-5">
-                                        <h3 className="text-lp-navy mb-2 text-sm font-bold">
-                                            {tool.title}
-                                        </h3>
-                                        <p className="text-lp-mid text-[0.8rem] leading-relaxed">
-                                            {tool.body}
-                                        </p>
-                                    </div>
-                                </Link>
-                            </Reveal>
-                        ))}
-                    </div>
+                    <ServiceVisualCards />
                 </div>
             </section>
 

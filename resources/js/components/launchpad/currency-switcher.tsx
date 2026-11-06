@@ -2,23 +2,16 @@ import { ChevronDown, Globe2 } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 
 import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
+import { demoSwitcherCountries } from '@/data/launchpad/countries';
 import {
     currencyOptions,
     type LaunchpadCurrencyCode,
 } from '@/data/launchpad/currencies';
 
-const demoCountries: { code: string; label: string }[] = [
-    { code: 'ZA', label: 'South Africa' },
-    { code: 'US', label: 'United States' },
-    { code: 'GB', label: 'United Kingdom' },
-    { code: 'DE', label: 'Germany (EU)' },
-    { code: 'AU', label: 'Australia' },
-    { code: 'CA', label: 'Canada' },
-    { code: 'IN', label: 'India' },
-    { code: 'NG', label: 'Nigeria' },
-    { code: 'KE', label: 'Kenya' },
-    { code: 'AE', label: 'United Arab Emirates' },
-];
+const demoCountries = demoSwitcherCountries.map((country) => ({
+    code: country.code,
+    label: country.name,
+}));
 
 export function CurrencySwitcher() {
     const {
@@ -140,8 +133,9 @@ export function CurrencySwitcher() {
                     </label>
 
                     <p className="text-lp-light mt-3 text-[0.65rem] leading-relaxed">
-                        Converted amounts are estimates for this UI. Live Payfast /
-                        Paddle charging connects in the next milestone.
+                        Display amounts use estimated FX. Checkout charges Payfast in
+                        ZAR for ZA/NA/BW, or Paddle for international customers when
+                        gateway keys are configured.
                     </p>
                 </div>
             ) : null}

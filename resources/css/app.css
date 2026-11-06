@@ -518,39 +518,27 @@
 }
 
 /*
- * Project container: centered, responsive max-widths (sm→2xl), horizontal gutters.
+ * Project container: always centered with consistent gutters.
+ * Avoids mid-breakpoint max-widths that pin content left and feel squeezed.
  * Use: className="container"
  */
 @utility container {
   width: 100%;
   margin-inline: auto;
-  padding-inline: 1rem;
-  max-width: 100%;
+  padding-inline: 1.25rem;
+  max-width: 72rem;
 
   @media (width >=40rem) {
-    max-width: 40rem;
-    /* sm */
-    padding-inline: 1.5rem;
-  }
-
-  @media (width >=48rem) {
-    max-width: 48rem;
-    /* md */
-  }
-
-  @media (width >=64rem) {
-    max-width: 64rem;
-    /* lg */
+    padding-inline: 1.75rem;
   }
 
   @media (width >=80rem) {
     max-width: 80rem;
-    /* xl */
+    padding-inline: 2rem;
   }
 
   @media (width >=96rem) {
-    max-width: 96rem;
-    /* 2xl */
+    max-width: 88rem;
   }
 }
 

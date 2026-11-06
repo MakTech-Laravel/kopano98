@@ -1,8 +1,11 @@
+import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { TemplatePreview } from '@/components/launchpad/templates/template-preview';
 import type { LaunchpadTemplate } from '@/data/launchpad/templates';
+import { exportCvPdf } from '@/lib/launchpad/cv-export';
+import { defaultCvDocument } from '@/data/launchpad/cv-document';
 
 type TemplateCardProps = {
     template: LaunchpadTemplate;
@@ -12,6 +15,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
     const [accent, setAccent] = useState(template.colors[0]);
     const [hoverAccent, setHoverAccent] = useState<string | null>(null);
     const activeAccent = hoverAccent ?? accent;
+    const builderHref = `/templates/builder?template=${encodeURIComponent(template.id)}&accent=${encodeURIComponent(accent.replace('#', ''))}`;
 
     return (
         <article className="group">
@@ -40,27 +44,19 @@ export function TemplateCard({ template }: TemplateCardProps) {
                     <button
                         type="button"
                         className="pointer-events-auto w-full rounded border border-white/45 px-3 py-2 text-[0.7rem] font-semibold tracking-wide text-white sm:flex-1"
-                        onClick={() =>
-                            toast.message('Download available soon', {
-                                description:
-                                    'Template downloads connect in the next milestone.',
-                            })
-                        }
+                        onClick={() => {
+                            exportCvPdf(defaultCvDocument, template, accent);
+                            toast.success('Sample PDF downloaded');
+                        }}
                     >
                         Download
                     </button>
-                    <button
-                        type="button"
-                        className="btn-lp-gold pointer-events-auto w-full rounded px-3 py-2 text-[0.7rem] sm:flex-1"
-                        onClick={() =>
-                            toast.message('CV builder coming soon', {
-                                description:
-                                    'Build flow hooks into Milestone 2 tools.',
-                            })
-                        }
+                    <Link
+                        href={builderHref}
+                        className="btn-lp-gold pointer-events-auto w-full rounded px-3 py-2 text-center text-[0.7rem] sm:flex-1"
                     >
                         Build My CV
-                    </button>
+                    </Link>
                 </div>
             </div>
 

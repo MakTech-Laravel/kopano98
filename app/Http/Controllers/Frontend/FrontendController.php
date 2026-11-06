@@ -28,6 +28,17 @@ class FrontendController extends Controller
         return Inertia::render('frontend/templates/index');
     }
 
+    public function templateBuilder(): Response
+    {
+        $templateId = request()->query('template');
+        $accent = request()->query('accent');
+
+        return Inertia::render('frontend/templates/builder', [
+            'templateId' => is_string($templateId) && $templateId !== '' ? $templateId : null,
+            'accent' => is_string($accent) && $accent !== '' ? $accent : null,
+        ]);
+    }
+
     public function about(): Response
     {
         return Inertia::render('frontend/about');
