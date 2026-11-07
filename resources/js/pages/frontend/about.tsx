@@ -43,7 +43,7 @@ export default function About() {
                     <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
                         <FadeIn className="w-full max-w-[300px] shrink-0">
                             <motion.img
-                                src="/images/launchpad/team/kopano.jpg"
+                                src="/images/launchpad/ref-images/kopano-thantsha.jpg"
                                 alt="Kopano Thantsha, Founder of Launchpad Careers"
                                 className="w-full rounded-xl object-cover shadow-[0_20px_40px_rgba(13,27,42,0.18)]"
                                 initial={

@@ -1,75 +1,69 @@
 import { Head, Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-    Briefcase,
-    FileSearch,
-    FileText,
-    LayoutDashboard,
-    UserRound,
-} from 'lucide-react';
+import { Briefcase, FileText, LayoutDashboard } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 
 import { CvScanTool } from '@/components/launchpad/tools/cv-scan-tool';
-import { postToolJson } from '@/components/launchpad/tools/tool-shell';
+import { LinkedInScanTool } from '@/components/launchpad/tools/linkedin-scan-tool';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
 
 const tools = [
     {
         id: 'cv',
         label: 'CV Deep Scan',
-        icon: FileText,
+        icon: 'cv',
     },
     {
         id: 'linkedin',
         label: 'LinkedIn',
-        icon: UserRound,
+        icon: 'linkedin',
     },
     {
         id: 'ats',
         label: 'ATS Match',
-        icon: FileSearch,
+        icon: 'ats',
     },
     {
         id: 'jobs',
         label: 'Find Jobs',
-        icon: Briefcase,
+        icon: 'jobs',
     },
     {
         id: 'dashboard',
         label: 'Dashboard',
-        icon: LayoutDashboard,
+        icon: 'dashboard',
     },
 ] as const;
 
 type ToolId = (typeof tools)[number]['id'];
 
+type JobType = 'fulltime' | 'internship' | 'vacation';
+
 export default function ToolsIndex() {
-    const [active, setActive] = useState<ToolId>('cv');
-    const [headline, setHeadline] = useState('');
-    const [about, setAbout] = useState('');
-    const [jobDescription, setJobDescription] = useState('');
+    const [active, setActive] = useState<ToolId>('linkedin');
+    const [jobType, setJobType] = useState<JobType>('fulltime');
 
     return (
         <LaunchpadLayout>
             <Head title="Free Tools | Launchpad Careers" />
 
-            <section className="min-h-[calc(100vh-4.5rem)] bg-[#f3f4f6] py-10 sm:py-12">
-                <div className="container">
-                    <div className="mb-8 max-w-3xl">
-                        <p className="mb-2 text-[0.72rem] font-bold tracking-[0.12em] text-[#C8A84B] uppercase">
-                            Free Tools
-                        </p>
-                        <h1 className="font-lp-display text-[clamp(1.85rem,4.5vw,2.65rem)] leading-[1.15] text-[#0d1b2a]">
-                            See how your CV or LinkedIn looks.
-                        </h1>
-                    </div>
+            <section className="bg-white py-10 sm:py-[2.5rem]">
+                <div className="mx-auto max-w-[960px] px-6 sm:px-6">
+                    <p className="mb-2 text-[0.68rem] font-bold tracking-[0.14em] text-[var(--lp-gold-on-light-sm)] uppercase">
+                        Free Tools
+                    </p>
+                    <h1 className="font-lp-display mb-[0.6rem] text-[clamp(1.5rem,4vw,2.2rem)] leading-[1.15] font-bold text-[var(--lp-navy)]">
+                        See how your CV or LinkedIn looks.
+                    </h1>
 
-                    <div className="grid items-start gap-5 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-8">
-                        <aside className="rounded-[12px] border border-[#e5e7eb] bg-white p-2 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
-                            <nav className="space-y-0.5">
+                    <div className="lp-rail-wrap mt-6 mb-5 grid items-start gap-4 lg:grid-cols-[186px_minmax(0,1fr)]">
+                        <aside className="sticky top-4 rounded-[10px] border border-[var(--lp-border)] bg-[var(--lp-off)] p-[0.6rem]">
+                            <p className="px-[0.65rem] pt-[0.2rem] pb-[0.35rem] text-[0.62rem] font-bold tracking-[0.07em] text-[var(--lp-text-light)] uppercase">
+                                Free Tools
+                            </p>
+                            <nav>
                                 {tools.map((tool) => {
-                                    const Icon = tool.icon;
                                     const selected = active === tool.id;
 
                                     return (
@@ -77,15 +71,12 @@ export default function ToolsIndex() {
                                             key={tool.id}
                                             type="button"
                                             onClick={() => setActive(tool.id)}
-                                            className={`flex w-full items-center gap-2.5 rounded-[8px] px-3 py-2.5 text-left text-[0.8rem] font-semibold transition ${selected
-                                                ? 'border-l-[3px] border-[#C8A84B] bg-[#f8fafc] text-[#1B3A6B]'
-                                                : 'border-l-[3px] border-transparent text-[#64748b] hover:bg-[#f8fafc]'
+                                            className={`mb-0.5 flex w-full items-center gap-2 rounded-[7px] border-l-[3px] py-2 pr-2.5 pl-[calc(0.65rem-3px)] text-left text-[0.78rem] font-semibold transition ${selected
+                                                ? 'border-[#C8A84B] bg-white text-[#1B3A6B]'
+                                                : 'text-lp-mid border-transparent hover:bg-white/70'
                                                 }`}
                                         >
-                                            <Icon
-                                                className="h-4 w-4 shrink-0"
-                                                strokeWidth={1.8}
-                                            />
+                                            <RailIcon name={tool.icon} />
                                             <span>{tool.label}</span>
                                         </button>
                                     );
@@ -97,106 +88,82 @@ export default function ToolsIndex() {
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={active}
-                                    initial={{ opacity: 0, y: 10 }}
+                                    initial={{ opacity: 0, y: 8 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -6 }}
-                                    transition={{ duration: 0.25 }}
+                                    exit={{ opacity: 0, y: -4 }}
+                                    transition={{ duration: 0.2 }}
                                 >
-                                    {active === 'cv' || active === 'ats' ? (
-                                        <CvScanTool
-                                            mode={
-                                                active === 'ats' ? 'ats' : 'deep'
-                                            }
-                                        />
+                                    {active === 'cv' ? (
+                                        <CvScanTool mode="deep" />
+                                    ) : null}
+
+                                    {active === 'ats' ? (
+                                        <CvScanTool mode="ats" />
                                     ) : null}
 
                                     {active === 'linkedin' ? (
-                                        <ToolCard
-                                            title="LinkedIn Scan"
-                                            description="Upload your LinkedIn profile as a PDF and get a full report — headline, About section, experience, skills and keyword gaps all checked."
-                                        >
-                                            <label className="mb-3 block text-sm">
-                                                <span className="mb-1.5 block text-[0.75rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
-                                                    Headline
-                                                </span>
-                                                <input
-                                                    className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] outline-none focus:border-[#1B3A6B]"
-                                                    value={headline}
-                                                    onChange={(event) =>
-                                                        setHeadline(
-                                                            event.target.value,
-                                                        )
-                                                    }
-                                                    placeholder="Paste your LinkedIn headline"
-                                                />
-                                            </label>
-                                            <label className="mb-4 block text-sm">
-                                                <span className="mb-1.5 block text-[0.75rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
-                                                    About
-                                                </span>
-                                                <textarea
-                                                    rows={5}
-                                                    className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] outline-none focus:border-[#1B3A6B]"
-                                                    value={about}
-                                                    onChange={(event) =>
-                                                        setAbout(
-                                                            event.target.value,
-                                                        )
-                                                    }
-                                                    placeholder="Paste your About section"
-                                                />
-                                            </label>
-                                            <LinkedInAnalyzeButton
-                                                headline={headline}
-                                                about={about}
-                                            />
-                                        </ToolCard>
+                                        <LinkedInScanTool />
                                     ) : null}
 
                                     {active === 'jobs' ? (
                                         <ToolCard
                                             title="Find Jobs"
-                                            description="Browse live vacancies and see how your CV matches each role."
+                                            description="Live vacancies from several job boards, in one place. Save the ones worth coming back to, and add your CV to see how well you match each one."
                                         >
-                                            <label className="mb-4 block">
-                                                <span className="mb-1.5 block text-[0.75rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
+                                            <div className="mb-4">
+                                                <p className="text-lp-navy mb-2 block text-[0.78rem] font-bold tracking-[0.06em] uppercase">
                                                     What are you looking for?
-                                                </span>
-                                                <input
-                                                    className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] outline-none focus:border-[#1B3A6B]"
-                                                    placeholder="e.g. Project Manager in Johannesburg"
-                                                    value={jobDescription}
-                                                    onChange={(event) =>
-                                                        setJobDescription(
-                                                            event.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </label>
-                                            <div className="mb-4 flex flex-wrap gap-2">
-                                                {[
-                                                    'Full-time Role',
-                                                    'Internship',
-                                                    'Vacation Work',
-                                                ].map((chip) => (
-                                                    <span
-                                                        key={chip}
-                                                        className="rounded-full border border-[#e5e7eb] bg-[#f8fafc] px-3 py-1 text-[0.74rem] font-semibold text-[#1B3A6B]"
-                                                    >
-                                                        {chip}
-                                                    </span>
-                                                ))}
+                                                </p>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {(
+                                                        [
+                                                            {
+                                                                id: 'fulltime',
+                                                                label: 'Full-time Role',
+                                                            },
+                                                            {
+                                                                id: 'internship',
+                                                                label: 'Internship',
+                                                            },
+                                                            {
+                                                                id: 'vacation',
+                                                                label: 'Vacation Work',
+                                                            },
+                                                        ] as const
+                                                    ).map((option) => {
+                                                        const selected =
+                                                            jobType === option.id;
+
+                                                        return (
+                                                            <button
+                                                                key={option.id}
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    setJobType(
+                                                                        option.id,
+                                                                    )
+                                                                }
+                                                                className={`rounded-md border-[1.5px] px-3.5 py-2 text-[0.82rem] font-semibold transition ${selected
+                                                                    ? 'border-[var(--lp-navy)] bg-[var(--lp-navy)] text-white'
+                                                                    : 'border-[var(--lp-border)] text-[var(--lp-text-mid)]'
+                                                                    }`}
+                                                            >
+                                                                {option.label}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
                                             </div>
                                             <button
                                                 type="button"
-                                                className="w-full rounded-lg bg-[#1B3A6B] px-5 py-3 text-[0.9rem] font-extrabold text-white"
+                                                className="btn-lp-navy inline-flex w-full items-center justify-center rounded-[5px] px-6 py-3 text-[0.83rem] font-bold"
                                                 onClick={() =>
                                                     toast.message(
                                                         'Job finder demo — connect live boards next',
                                                     )
                                                 }
                                             >
-                                                Search jobs
+                                                Find My Jobs →
                                             </button>
                                         </ToolCard>
                                     ) : null}
@@ -206,23 +173,25 @@ export default function ToolsIndex() {
                                             title="My Dashboard"
                                             description="Everything in one place: the CV the tools are using, the reports you have run, and the jobs you have saved."
                                         >
-                                            <div className="rounded-[10px] border border-dashed border-[#d1d5db] bg-[#fafafa] px-4 py-8 text-center">
+                                            <div className="rounded-[8px] border border-dashed border-[var(--lp-border)] bg-[var(--lp-off)] px-4 py-8 text-center">
                                                 <p className="text-[0.9rem] font-bold text-[#1B3A6B]">
                                                     No scans saved yet
                                                 </p>
-                                                <p className="mt-1 text-[0.8rem] text-[#64748b]">
-                                                    Run a CV Deep Scan to see your
-                                                    first report here.
+                                                <p className="text-lp-mid mt-1 text-[0.8rem]">
+                                                    Run a CV Deep Scan to see
+                                                    your first report here.
                                                 </p>
                                                 <button
                                                     type="button"
-                                                    className="mt-4 rounded-lg bg-[#1B3A6B] px-4 py-2.5 text-[0.8rem] font-bold text-white"
-                                                    onClick={() => setActive('cv')}
+                                                    className="btn-lp-navy mt-4 rounded-[5px] px-4 py-2.5 text-[0.8rem] font-bold"
+                                                    onClick={() =>
+                                                        setActive('cv')
+                                                    }
                                                 >
                                                     Open CV Deep Scan
                                                 </button>
                                             </div>
-                                            <p className="mt-4 text-center text-[0.78rem] text-[#64748b]">
+                                            <p className="text-lp-mid mt-4 text-center text-[0.78rem]">
                                                 Looking for paid rewrites?{' '}
                                                 <Link
                                                     href="/services"
@@ -249,68 +218,79 @@ function ToolCard({
     children,
 }: {
     title: string;
-    description: string;
+    description?: string;
     children: ReactNode;
 }) {
     return (
-        <div className="mx-auto w-full max-w-[560px] rounded-[14px] border border-[#e5e7eb] bg-white p-7 text-left shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-8">
-            <h2 className="mb-1.5 text-[1.15rem] font-bold text-[#1B3A6B]">
+        <div className="lp-tool-card mb-4 rounded-lg border border-[var(--lp-border)] bg-white p-5 text-left">
+            <h2 className="mb-1 text-[1rem] font-bold text-[var(--lp-text)]">
                 {title}
             </h2>
-            <p className="mb-6 text-[0.85rem] leading-relaxed text-[#666]">
-                {description}
-            </p>
+            {description ? (
+                <p className="mb-3.5 text-[0.8rem] leading-relaxed text-[var(--lp-text-mid)]">
+                    {description}
+                </p>
+            ) : null}
             {children}
         </div>
     );
 }
 
-function LinkedInAnalyzeButton({
-    headline,
-    about,
+function RailIcon({
+    name,
 }: {
-    headline: string;
-    about: string;
+    name: 'cv' | 'linkedin' | 'ats' | 'jobs' | 'dashboard';
 }) {
-    const [result, setResult] = useState<string | null>(null);
-    const [busy, setBusy] = useState(false);
+    if (name === 'linkedin') {
+        return (
+            <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+                className="shrink-0"
+            >
+                <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.44v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+            </svg>
+        );
+    }
+
+    if (name === 'ats') {
+        return (
+            <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="shrink-0"
+            >
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="12" cy="12" r="1.4" fill="currentColor" />
+            </svg>
+        );
+    }
+
+    if (name === 'cv') {
+        return <FileText className="h-[15px] w-[15px] shrink-0" strokeWidth={1.7} />;
+    }
+
+    if (name === 'jobs') {
+        return (
+            <Briefcase className="h-[15px] w-[15px] shrink-0" strokeWidth={1.7} />
+        );
+    }
 
     return (
-        <>
-            <button
-                type="button"
-                className="w-full rounded-lg bg-[#1B3A6B] px-5 py-3 text-[0.9rem] font-extrabold text-white disabled:opacity-40"
-                disabled={busy || (!headline && !about)}
-                onClick={() => {
-                    void (async () => {
-                        setBusy(true);
-
-                        try {
-                            const payload = await postToolJson<{
-                                headline_score: number;
-                                about_score: number;
-                                suggestions: string[];
-                            }>('/tools/linkedin-analyze', { headline, about });
-
-                            setResult(
-                                `Headline ${payload.headline_score}% · About ${payload.about_score}%. ${payload.suggestions.join(' ')}`,
-                            );
-                            toast.success('LinkedIn scan complete');
-                        } catch {
-                            toast.error('LinkedIn scan failed');
-                        } finally {
-                            setBusy(false);
-                        }
-                    })();
-                }}
-            >
-                {busy ? 'Analysing…' : 'Analyse profile'}
-            </button>
-            {result ? (
-                <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
-                    {result}
-                </p>
-            ) : null}
-        </>
+        <LayoutDashboard
+            className="h-[15px] w-[15px] shrink-0"
+            strokeWidth={1.7}
+        />
     );
 }

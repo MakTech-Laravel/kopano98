@@ -2,12 +2,7 @@ import { Head } from '@inertiajs/react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { lazy, Suspense, useMemo, useState } from 'react';
 
-import {
-    FadeIn,
-    Reveal,
-    Stagger,
-    StaggerItem,
-} from '@/components/launchpad/reveal';
+import { FadeIn, Reveal } from '@/components/launchpad/reveal';
 import {
     FilterSidebar,
     type TemplateFilters,
@@ -176,12 +171,15 @@ export default function TemplatesIndex() {
                                 <span className="text-lp-navy font-semibold">
                                     Live templates
                                 </span>{' '}
-                                — hover a colour swatch to preview accents, then
-                                click{' '}
+                                — tap a template for{' '}
+                                <span className="text-lp-navy font-semibold">
+                                    Download
+                                </span>{' '}
+                                /{' '}
                                 <span className="text-lp-navy font-semibold">
                                     Build My CV
-                                </span>{' '}
-                                to open the customizer.
+                                </span>
+                                , or tap a colour to preview accents.
                             </p>
 
                             {filtered.length === 0 ? (
@@ -190,19 +188,20 @@ export default function TemplatesIndex() {
                                     all.
                                 </p>
                             ) : (
-                                <Stagger
-                                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3"
-                                    stagger={0.05}
-                                >
-                                    {filtered.map((template) => (
-                                        <StaggerItem key={template.id}>
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+                                    {filtered.map((template, index) => (
+                                        <Reveal
+                                            key={template.id}
+                                            delay={Math.min(index * 0.04, 0.28)}
+                                            duration={0.45}
+                                        >
                                             <TemplateCard
                                                 template={template}
                                                 onBuild={setEditingTemplate}
                                             />
-                                        </StaggerItem>
+                                        </Reveal>
                                     ))}
-                                </Stagger>
+                                </div>
                             )}
                         </div>
                     </div>

@@ -38,14 +38,18 @@
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/favicon.png">
     <meta name="theme-color" content="#1a2332">
-    <meta name="description" content="Free ATS CV checker, professional CV rewrites, LinkedIn profile fixes, and career coaching — Launchpad Careers.">
+    <meta name="description"
+        content="Free ATS CV checker, professional CV rewrites, LinkedIn profile fixes, and career coaching — Launchpad Careers.">
     <meta property="og:site_name" content="Launchpad Careers">
     <meta property="og:image" content="{{ url('/og-image.png') }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="{{ url('/og-image.png') }}">
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet" />
 
     @routes
     @viteReactRefresh

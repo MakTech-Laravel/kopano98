@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { StaticDeepScanReport } from '@/components/launchpad/tools/static-deep-scan-report';
+import { launchpadIndustries } from '@/data/launchpad/industries';
 
 type CvScanToolProps = {
     mode: 'ats' | 'deep';
@@ -9,18 +10,7 @@ type CvScanToolProps = {
 
 type Stage = 'form' | 'parsing' | 'scanning' | 'report';
 
-const MAX_BYTES = 5 * 1024 * 1024;
-
-const industries = [
-    { value: '', label: 'Auto-detect, or select…' },
-    { value: 'built_environment', label: 'Built Environment' },
-    { value: 'technology', label: 'Technology & IT' },
-    { value: 'healthcare', label: 'Healthcare' },
-    { value: 'finance', label: 'Finance & Banking' },
-    { value: 'logistics', label: 'Logistics & Supply Chain' },
-    { value: 'retail', label: 'Retail' },
-    { value: 'other', label: 'Other' },
-];
+const MAX_BYTES = 10 * 1024 * 1024;
 
 const parseSteps = [
     'Reading your CV…',
@@ -32,7 +22,7 @@ const parseSteps = [
 ];
 
 /**
- * Launchpad Free Tools scan card — same upload layout as launchpadcareers.co.za.
+ * Launchpad Free Tools scan card — matches Compressed reference CV / ATS panels.
  */
 export function CvScanTool({ mode }: CvScanToolProps) {
     const [stage, setStage] = useState<Stage>('form');
@@ -40,16 +30,27 @@ export function CvScanTool({ mode }: CvScanToolProps) {
     const [dragging, setDragging] = useState(false);
     const [role, setRole] = useState('');
     const [industry, setIndustry] = useState('');
+    const [otherIndustry, setOtherIndustry] = useState('');
+    const [jobDescription, setJobDescription] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [parseIndex, setParseIndex] = useState(0);
     const [parseProgress, setParseProgress] = useState(0);
     const [scanProgress, setScanProgress] = useState(0);
 
     const isAts = mode === 'ats';
-    const title = isAts ? 'ATS Match' : 'CV Deep Scan';
-    const description = isAts
-        ? 'Upload your CV and paste the job description. Our software checks how well they match and what is missing.'
-        : 'Upload your CV and get a full report — content, layout, formatting, buzzwords and ATS score all checked.';
+    const inputId = isAts ? 'lp-ats-file-input' : 'lp-ds2-file-input';
+
+    useEffect(() => {
+        setStage('form');
+        setFileName(null);
+        setRole('');
+        setIndustry('');
+        setOtherIndustry('');
+        setJobDescription('');
+        setError(null);
+        setParseProgress(0);
+        setScanProgress(0);
+    }, [mode]);
 
     useEffect(() => {
         if (stage !== 'parsing') {
@@ -90,13 +91,15 @@ export function CvScanTool({ mode }: CvScanToolProps) {
                 window.clearInterval(timer);
                 window.setTimeout(() => {
                     setStage('report');
-                    toast.success('Deep Scan complete');
+                    toast.success(
+                        isAts ? 'ATS Match complete' : 'Deep Scan complete',
+                    );
                 }, 280);
             }
         }, 90);
 
         return () => window.clearInterval(timer);
-    }, [stage]);
+    }, [stage, isAts]);
 
     const acceptFile = (file: File | undefined) => {
         if (!file) {
@@ -106,7 +109,7 @@ export function CvScanTool({ mode }: CvScanToolProps) {
         setError(null);
 
         if (file.size > MAX_BYTES) {
-            setError('File too large. Please upload under 5MB.');
+            setError('File too large. Please upload under 10MB.');
             setFileName(null);
 
             return;
@@ -114,14 +117,42 @@ export function CvScanTool({ mode }: CvScanToolProps) {
 
         const ext = file.name.split('.').pop()?.toLowerCase();
 
-        if (ext !== 'pdf') {
-            setError('PDF only — please upload a PDF under 5MB.');
+        if (isAts) {
+            if (ext !== 'pdf' && ext !== 'docx') {
+                setError('PDF or Word (.docx) only — max 10MB.');
+                setFileName(null);
+
+                return;
+            }
+        } else if (ext !== 'pdf') {
+            setError('PDF only — please upload a PDF under 10MB.');
             setFileName(null);
 
             return;
         }
 
         setFileName(file.name);
+    };
+
+    const startScan = () => {
+        if (!fileName) {
+            setError(
+                isAts
+                    ? 'Upload your CV before checking ATS Match.'
+                    : 'Upload your CV before running Deep Scan.',
+            );
+
+            return;
+        }
+
+        if (isAts && jobDescription.trim().length < 20) {
+            setError('Paste the job description before checking ATS Match.');
+
+            return;
+        }
+
+        setError(null);
+        setStage('parsing');
     };
 
     if (stage === 'report') {
@@ -134,6 +165,8 @@ export function CvScanTool({ mode }: CvScanToolProps) {
                     setFileName(null);
                     setRole('');
                     setIndustry('');
+                    setOtherIndustry('');
+                    setJobDescription('');
                     setError(null);
                     setParseProgress(0);
                     setScanProgress(0);
@@ -144,7 +177,7 @@ export function CvScanTool({ mode }: CvScanToolProps) {
 
     if (stage === 'parsing') {
         return (
-            <div className="flex min-h-[360px] flex-col items-center justify-center rounded-[14px] border border-[#e5e7eb] bg-white px-6 py-12 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+            <div className="border-lp flex min-h-[360px] flex-col items-center justify-center rounded-lg border bg-white px-6 py-12">
                 <div className="relative h-14 w-full max-w-md overflow-hidden">
                     <div
                         className="absolute inset-x-0 transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)]"
@@ -177,7 +210,7 @@ export function CvScanTool({ mode }: CvScanToolProps) {
 
     if (stage === 'scanning') {
         return (
-            <div className="overflow-hidden rounded-[14px] border border-[#e5e7eb] bg-[#eef1f6] p-3 shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-4">
+            <div className="border-lp overflow-hidden rounded-lg border bg-[#eef1f6] p-3 sm:p-4">
                 <div
                     className="relative mx-auto flex w-full max-w-[820px] flex-col items-center gap-4 overflow-hidden rounded-2xl px-4 py-5 shadow-[0_10px_50px_rgba(0,0,0,0.2)]"
                     style={{
@@ -215,7 +248,8 @@ export function CvScanTool({ mode }: CvScanToolProps) {
                                     top: '50%',
                                     background:
                                         'linear-gradient(90deg,transparent,#ef4444 12%,#fff 50%,#ef4444 88%,transparent)',
-                                    boxShadow: '0 0 10px 2px rgba(239,68,68,0.5)',
+                                    boxShadow:
+                                        '0 0 10px 2px rgba(239,68,68,0.5)',
                                 }}
                             />
                             <div
@@ -240,29 +274,30 @@ export function CvScanTool({ mode }: CvScanToolProps) {
     }
 
     return (
-        <div className="mx-auto w-full max-w-[560px] rounded-[14px] border border-[#e5e7eb] bg-white p-7 text-left shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-8">
-            <h2 className="mb-1.5 text-[1.15rem] font-bold text-[#1B3A6B]">
-                {title}
+        <div className="lp-tool-card mb-4 rounded-lg border border-[var(--lp-border)] bg-white p-5 text-left">
+            <h2 className="mb-1 text-[1rem] font-bold text-[var(--lp-text)]">
+                {isAts ? 'ATS Match Checker' : 'CV Deep Scan'}
             </h2>
-            <p className="mb-6 text-[0.85rem] leading-relaxed text-[#666]">
-                {description}
-            </p>
+            {isAts ? (
+                <p className="mb-3.5 text-[0.8rem] leading-relaxed text-[var(--lp-text-mid)]">
+                    Upload your CV and paste the job description. Our software
+                    checks how well they match and what is missing.
+                </p>
+            ) : null}
 
             <div
                 role="button"
                 tabIndex={0}
-                className={`mb-5 cursor-pointer rounded-[10px] border-2 border-dashed px-6 py-10 text-center transition ${dragging
-                        ? 'border-[#1B3A6B] bg-[#f0f4ff]'
-                        : fileName
-                            ? 'border-emerald-400 bg-emerald-50'
-                            : 'border-[#d1d5db] bg-[#fafafa]'
+                className={`mb-4 cursor-pointer rounded-[10px] border-2 border-dashed px-6 py-8 text-center transition ${dragging
+                    ? 'border-[var(--lp-navy)] bg-[#e8f0fe]'
+                    : fileName
+                        ? 'border-[#86efac] bg-[#dcfce7]'
+                        : 'border-[var(--lp-border)] bg-[var(--lp-off)]'
                     }`}
-                onClick={() =>
-                    document.getElementById('lp-ds2-file-input')?.click()
-                }
+                onClick={() => document.getElementById(inputId)?.click()}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
-                        document.getElementById('lp-ds2-file-input')?.click();
+                        document.getElementById(inputId)?.click();
                     }
                 }}
                 onDragOver={(event) => {
@@ -278,92 +313,128 @@ export function CvScanTool({ mode }: CvScanToolProps) {
             >
                 {fileName ? (
                     <>
-                        <p className="text-[0.95rem] font-bold text-emerald-700">
-                            ✓ {fileName}
+                        <p className="text-[0.85rem] font-semibold text-[var(--lp-green)]">
+                            ✅ {fileName}
                         </p>
-                        <p className="mt-1 text-[0.78rem] text-[#999]">
-                            Your file is uploaded — review the details below and
-                            start when you&apos;re ready.
+                        <p className="text-lp-mid mt-0.5 text-[0.72rem]">
+                            {isAts ? 'Ready to match' : 'Ready to scan'}
                         </p>
+                        <button
+                            type="button"
+                            className="text-lp-light mt-2 text-[0.8rem]"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                setFileName(null);
+                                setError(null);
+                            }}
+                        >
+                            Remove
+                        </button>
                     </>
                 ) : (
                     <>
-                        <p className="font-bold text-[#1B3A6B]">
-                            Drop your CV here or click to upload
+                        <p className="text-lp-navy text-[0.9rem] font-semibold">
+                            Upload your CV
                         </p>
-                        <p className="mt-1 text-[0.78rem] text-[#999]">
-                            PDF only — max 5MB
+                        <p className="text-lp-light mt-1 text-[0.75rem]">
+                            {isAts
+                                ? 'PDF or Word (.docx) — max 10MB'
+                                : 'PDF only — max 10MB'}
                         </p>
                     </>
                 )}
             </div>
             <input
-                id="lp-ds2-file-input"
+                id={inputId}
                 type="file"
                 className="hidden"
-                accept=".pdf,application/pdf"
+                accept={
+                    isAts
+                        ? '.pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        : '.pdf,application/pdf'
+                }
                 onChange={(event) => {
                     acceptFile(event.target.files?.[0]);
                     event.target.value = '';
                 }}
             />
 
-            <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <label className="block text-left">
-                    <span className="mb-1.5 block text-[0.72rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
-                        Target Role
+            {isAts ? (
+                <label className="mb-3 block">
+                    <span className="mb-[0.3rem] block text-[0.72rem] font-bold tracking-[0.06em] text-[var(--lp-text-mid)] uppercase">
+                        Paste the job description
                     </span>
-                    <input
-                        type="text"
-                        value={role}
-                        onChange={(event) => setRole(event.target.value)}
-                        placeholder="Auto-detect, or type your role"
-                        autoComplete="off"
-                        className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] text-[#0f172a] outline-none placeholder:text-[#94a3b8] focus:border-[#1B3A6B]"
+                    <textarea
+                        rows={4}
+                        value={jobDescription}
+                        onChange={(event) =>
+                            setJobDescription(event.target.value)
+                        }
+                        className="min-h-[92px] w-full resize-y rounded-md border-[1.5px] border-[var(--lp-border)] bg-white px-[0.85rem] py-[0.65rem] text-[0.88rem] leading-relaxed outline-none focus:border-[var(--lp-navy)]"
                     />
-                </label>
-                <label className="block text-left">
-                    <span className="mb-1.5 block text-[0.72rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
-                        Industry
+                    <span className="mt-1 block text-[0.72rem] text-[var(--lp-text-light)]">
+                        {jobDescription.trim().split(/\s+/).filter(Boolean).length}{' '}
+                        words
                     </span>
-                    <select
-                        value={industry}
-                        onChange={(event) => setIndustry(event.target.value)}
-                        className="w-full rounded-md border border-[#e5e7eb] bg-white px-3 py-2.5 text-[0.84rem] text-[#0f172a] outline-none focus:border-[#1B3A6B]"
-                    >
-                        {industries.map((item) => (
-                            <option key={item.value || 'auto'} value={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
-                    </select>
                 </label>
-            </div>
+            ) : (
+                <div className="lp-frow mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <label className="mb-0 block">
+                        <span className="mb-[0.3rem] block text-[0.72rem] font-bold tracking-[0.06em] text-[var(--lp-text-mid)] uppercase">
+                            Target role
+                        </span>
+                        <input
+                            type="text"
+                            value={role}
+                            onChange={(event) => setRole(event.target.value)}
+                            placeholder="e.g. Project Manager"
+                            autoComplete="off"
+                            className="w-full rounded-md border-[1.5px] border-[var(--lp-border)] bg-white px-[0.85rem] py-[0.65rem] text-[0.88rem] outline-none placeholder:text-[#94a3b8] focus:border-[var(--lp-navy)]"
+                        />
+                    </label>
+                    <label className="mb-0 block">
+                        <span className="mb-[0.3rem] block text-[0.72rem] font-bold tracking-[0.06em] text-[var(--lp-text-mid)] uppercase">
+                            Industry
+                        </span>
+                        <select
+                            value={industry}
+                            onChange={(event) =>
+                                setIndustry(event.target.value)
+                            }
+                            className="w-full rounded-md border-[1.5px] border-[var(--lp-border)] bg-white px-[0.85rem] py-[0.65rem] text-[0.88rem] outline-none focus:border-[var(--lp-navy)]"
+                        >
+                            <option value="">Select…</option>
+                            {launchpadIndustries.map((item) => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        {industry === 'Other' ? (
+                            <input
+                                type="text"
+                                value={otherIndustry}
+                                onChange={(event) =>
+                                    setOtherIndustry(event.target.value)
+                                }
+                                placeholder="e.g. Agriculture, Education, Logistics…"
+                                className="mt-2 w-full rounded-md border-[1.5px] border-[var(--lp-border)] bg-white px-[0.85rem] py-[0.65rem] text-[0.88rem] outline-none focus:border-[var(--lp-navy)]"
+                            />
+                        ) : null}
+                    </label>
+                </div>
+            )}
 
-            {fileName ? (
-                <>
-                    <button
-                        type="button"
-                        className="mb-3 w-full rounded-lg bg-[#1B3A6B] px-8 py-3.5 text-[0.95rem] font-extrabold text-white"
-                        onClick={() => setStage('parsing')}
-                    >
-                        Start Deep Scan
-                    </button>
-                    <button
-                        type="button"
-                        className="mx-auto block text-[0.8rem] text-[#888] underline"
-                        onClick={() => {
-                            setFileName(null);
-                            setError(null);
-                        }}
-                    >
-                        Choose a different file
-                    </button>
-                </>
-            ) : null}
+            <button
+                type="button"
+                className="btn-lp-navy inline-flex w-full items-center justify-center rounded-[5px] px-6 py-3 text-[0.83rem] font-bold disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={startScan}
+            >
+                {isAts ? 'Check ATS Match' : 'Run Deep Scan'}
+            </button>
 
             {error ? (
-                <div className="mt-4 rounded-md border border-[#fecaca] bg-[#fef2f2] px-3 py-2.5 text-[0.82rem] font-medium text-[#dc2626]">
+                <div className="mt-3 rounded-md border border-[#fecaca] bg-[#fef2f2] px-3 py-2.5 text-[0.82rem] font-medium text-[#dc2626]">
                     {error}
                 </div>
             ) : null}

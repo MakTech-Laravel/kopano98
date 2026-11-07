@@ -1,5 +1,4 @@
 import { Head, Link } from '@inertiajs/react';
-import { useState } from 'react';
 
 import { AtsShowcaseSection } from '@/components/launchpad/ats-showcase-section';
 import { CompanyLogosSection } from '@/components/launchpad/company-logos-section';
@@ -7,53 +6,62 @@ import { CvTemplateSlider } from '@/components/launchpad/cv-template-slider';
 import { LaunchpadHero } from '@/components/launchpad/hero';
 import { Reveal } from '@/components/launchpad/reveal';
 import { SectionHeading } from '@/components/launchpad/section-heading';
-import { ServiceVisualCards } from '@/components/launchpad/service-visual-cards';
+import { TransformationSection } from '@/components/launchpad/transformation-section';
 import { useLaunchpadLocale } from '@/contexts/launchpad-locale';
-import { launchpadFaqs } from '@/data/launchpad/faqs';
 import { launchpadServices } from '@/data/launchpad/services';
 import { launchpadTestimonials } from '@/data/launchpad/testimonials';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
 
 const stats = [
-    { num: '2.8k+', lbl: 'CVs reviewed' },
-    { num: '78%', lbl: 'Avg. ATS lift' },
-    { num: '48h', lbl: 'Typical turnaround' },
-    { num: 'ZA+', lbl: 'Clients worldwide' },
+    { num: '250+', lbl: 'CVs seen per role by recruiters' },
+    { num: '6s', lbl: 'Average recruiter scan time' },
+    { num: '75%', lbl: 'CVs filtered out by ATS before a human review' },
+    { num: 'Top 1%', lbl: 'Our standard for every CV' },
 ];
 
 const whyCards = [
     {
         title: 'First-hand experience',
-        body: 'Every document is reviewed by someone who has navigated the job market first-hand — practical advice, not theory.',
+        body: 'Every document is reviewed by someone who has navigated the job market first-hand, so the advice is practical, not theory.',
     },
     {
         title: 'Industry insight',
-        body: 'Hands-on experience in demanding, results-driven industries shapes how every CV and profile is approached.',
+        body: 'Hands-on experience in demanding, results-driven industries shapes how every CV and profile is approached, no matter your field or level.',
     },
     {
         title: 'Local & international',
-        body: 'Applying in South Africa or targeting roles abroad, we tailor your documents for the right market and currency.',
+        body: 'Applying in South Africa or targeting roles abroad, we tailor your documents for the right market.',
     },
 ];
 
-const howSteps = [
-    {
-        title: 'Choose a service or package',
-        body: 'Browse services and pick what you need — individual services or a bundle.',
+const offerIds = [
+    'cv-rewrite-entry',
+    'linkedin-graduate',
+    'interview-prep',
+    'essentials',
+] as const;
+
+const offerCopy: Record<
+    (typeof offerIds)[number],
+    { title: string; body: string }
+> = {
+    'cv-rewrite-entry': {
+        title: 'CV Rewrite',
+        body: 'Buzzwords removed, no repeating words, weak verbs replaced, impact added and ATS optimised.',
     },
-    {
-        title: 'Place your order & pay securely',
-        body: 'Checkout in your local currency via Payfast (SA) or Paddle (international). Payment is instant.',
+    'linkedin-graduate': {
+        title: 'LinkedIn Profile Fix',
+        body: 'Headline, About section, skills, education and experience, all optimised for recruiters.',
     },
-    {
-        title: 'Message us on WhatsApp',
-        body: 'Share your details and documents whenever you’re ready — no rush at all.',
+    'interview-prep': {
+        title: 'Interview Prep',
+        body: 'Tailored question guide & model answers for your role.',
     },
-    {
-        title: 'Delivered to your inbox',
-        body: 'Polished documents within 1–2 business days. Revisions are always part of the process.',
+    essentials: {
+        title: 'The Essentials',
+        body: 'CV Rewrite + LinkedIn Profile Fix, with before-and-after optimisation reports for both.',
     },
-];
+};
 
 export default function Home() {
     return (
@@ -64,68 +72,80 @@ export default function Home() {
 }
 
 function HomeContent() {
-    const [openFaq, setOpenFaq] = useState<number | null>(0);
-    const { formatPrice, gatewayName, currencyCode } = useLaunchpadLocale();
+    const { formatPrice } = useLaunchpadLocale();
     const previewServices = launchpadServices.filter((service) =>
-        [
-            'cv-rewrite-entry',
-            'linkedin-graduate',
-            'interview-prep',
-            'essentials',
-        ].includes(service.id),
+        (offerIds as readonly string[]).includes(service.id),
     );
 
     return (
         <>
-            <Head title="Free ATS CV Checker | Launchpad Careers">
+            <Head title="Free ATS CV Checker — Is Your CV ATS Friendly? | Launchpad">
                 <meta
                     head-key="description"
                     name="description"
-                    content="Free ATS CV checker — see your match score in seconds. Plus professional CV rewrites, LinkedIn profiles & interview coaching from Launchpad Careers."
+                    content="Free ATS CV checker — see your match score in seconds. Plus professional CV rewrites, LinkedIn profiles & interview coaching."
                 />
             </Head>
 
             <LaunchpadHero
                 title={
                     <>
-                        Is your CV{' '}
-                        <span className="text-lp-gold">ATS friendly?</span>
+                        Your CV{' '}
+                        <span className="font-[family-name:var(--font-lp-sans)] [font-variant-ligatures:none]">
+                            &
+                        </span>{' '}
+                        Career,
+                        <br />
+                        <span className="text-lp-gold">expertly crafted.</span>
                     </>
                 }
-                subtitle="Free ATS check in seconds — plus professional rewrites, LinkedIn fixes, and interview prep from Launchpad Careers."
+                subtitle="Human-reviewed CVs, LinkedIn profiles and interview coaching, by an industry professional who has been through the job market first-hand."
+                primaryCta={{
+                    label: 'View Packages & Pricing',
+                    href: '/services',
+                }}
+                secondaryCta={{
+                    label: 'Free ATS CV Check',
+                    href: '/tools',
+                }}
                 showTemplateCarousel
             />
 
             <div className="bg-lp-navy-2 border-t border-[var(--lp-navy-3)]">
-                <div className="container grid grid-cols-2 md:grid-cols-4">
+                <div className="grid grid-cols-2 md:grid-cols-4">
                     {stats.map((stat, index) => (
                         <div
                             key={stat.lbl}
                             className={`px-3 py-4 text-center ${index % 2 === 0
-                                ? 'border-r border-[var(--lp-navy-3)]'
-                                : ''
+                                    ? 'border-r border-[var(--lp-navy-3)]'
+                                    : ''
                                 } ${index < 2
                                     ? 'border-b border-[var(--lp-navy-3)] md:border-b-0'
                                     : ''
                                 } md:border-r md:last:border-r-0`}
                         >
-                            <span className="font-lp-display text-lp-gold block text-2xl sm:text-[1.75rem]">
+                            <span className="font-lp-display block text-[1.5rem] leading-none font-bold text-white">
                                 {stat.num}
                             </span>
-                            <span className="mt-1 block text-[0.65rem] text-white/50">
+                            <span className="mt-1 block text-[0.65rem] leading-snug text-white/50">
                                 {stat.lbl}
                             </span>
                         </div>
                     ))}
                 </div>
+                <p className="px-4 py-1.5 text-center text-[0.65rem] text-white/50">
+                    Sources: LinkedIn Talent Insights · Ladders Eye-Tracking
+                    Study · CareerBuilder Recruiter Survey
+                </p>
             </div>
 
             <CompanyLogosSection />
+            <TransformationSection />
             <AtsShowcaseSection />
             <CvTemplateSlider />
 
             <section className="py-10 sm:py-12">
-                <div className="container">
+                <div className="container max-w-[960px]">
                     <Reveal>
                         <SectionHeading
                             label="Why Launchpad"
@@ -133,23 +153,26 @@ function HomeContent() {
                                 <>
                                     Built by a{' '}
                                     <span className="text-[var(--lp-gold-on-light)]">
-                                        professional
+                                        Professional
                                     </span>{' '}
-                                    · designed to get you hired.
+                                    | Designed to get you{' '}
+                                    <span className="text-[var(--lp-gold-on-light)]">
+                                        hired.
+                                    </span>
                                 </>
                             }
                             subtitle="Every document we deliver is reviewed personally by an industry professional who has navigated the job market first-hand."
                         />
                     </Reveal>
-                    <div className="grid gap-4 md:grid-cols-3">
+                    <div className="grid gap-3 md:grid-cols-3 md:gap-4">
                         {whyCards.map((card, index) => (
                             <Reveal key={card.title} delay={index * 0.06}>
-                                <div className="h-full rounded-[10px] border border-[var(--lp-border)] bg-[var(--lp-off)] p-5 transition hover:border-[var(--lp-navy-3)]">
-                                    <div className="bg-lp-gold mb-3 h-px w-8" />
-                                    <h3 className="text-lp-navy mb-2 text-sm font-semibold">
+                                <div className="h-full rounded-lg bg-[var(--lp-off)] p-5">
+                                    <div className="bg-lp-gold mb-3 h-1 w-8 rounded-full" />
+                                    <h3 className="text-lp-navy mb-1.5 text-[0.9rem] font-bold">
                                         {card.title}
                                     </h3>
-                                    <p className="text-lp-mid text-[0.8rem] leading-relaxed">
+                                    <p className="text-[0.8rem] leading-relaxed text-[var(--lp-text-mid)]">
                                         {card.body}
                                     </p>
                                 </div>
@@ -159,28 +182,41 @@ function HomeContent() {
                 </div>
             </section>
 
-            <section className="border-y border-[var(--lp-border)] bg-[var(--lp-off)] py-10 sm:py-12">
-                <div className="container">
+            <hr className="border-[var(--lp-border)]" />
+
+            <section className="py-10 sm:py-12">
+                <div className="container max-w-[960px]">
                     <Reveal>
                         <SectionHeading
                             label="What clients say"
-                            title="Results from industry professionals."
+                            title={
+                                <>
+                                    Results from{' '}
+                                    <span className="text-[var(--lp-gold-on-light)]">
+                                        industry
+                                    </span>{' '}
+                                    professionals.
+                                </>
+                            }
                             subtitle="Professionals across South Africa who got shortlisted after working with us."
                         />
                     </Reveal>
-                    <div className="grid gap-4 md:grid-cols-3">
+                    <div className="grid gap-3 md:grid-cols-3 md:gap-4">
                         {launchpadTestimonials.map((item, index) => (
                             <Reveal key={item.name} delay={index * 0.05}>
-                                <figure className="flex h-full flex-col rounded-[10px] border border-[var(--lp-border)] bg-white p-5 shadow-sm">
-                                    <div className="mb-3 flex items-center justify-between">
-                                        <span className="font-lp-display text-[1.6rem] leading-none text-[var(--lp-gold-on-light)]">
+                                <figure className="flex h-full flex-col rounded-[10px] bg-[var(--lp-off)] p-5">
+                                    <div className="mb-2 flex items-center justify-between">
+                                        <span className="font-lp-display text-[1.5rem] leading-none text-[var(--lp-gold-on-light)]">
                                             “
                                         </span>
-                                        <span className="text-[0.85rem] text-amber-500">
+                                        <span
+                                            className="text-[0.85rem] text-amber-500"
+                                            aria-label="5 out of 5 stars"
+                                        >
                                             ★★★★★
                                         </span>
                                     </div>
-                                    <blockquote className="text-lp-mid flex-1 text-[0.83rem] leading-relaxed">
+                                    <blockquote className="text-lp-navy flex-1 text-[0.83rem] leading-[1.65]">
                                         {item.quote}
                                     </blockquote>
                                     <div className="mt-4 mb-3">
@@ -188,18 +224,18 @@ function HomeContent() {
                                             {item.service}
                                         </span>
                                     </div>
-                                    <figcaption className="flex items-center gap-3">
+                                    <figcaption className="flex items-center gap-2.5">
                                         <img
                                             src={item.photo}
                                             alt={item.name}
-                                            className="h-11 w-11 rounded-full object-cover object-top"
+                                            className="h-10 w-10 rounded-full object-cover object-top"
                                             loading="lazy"
                                         />
                                         <div>
                                             <p className="text-lp-navy text-[0.78rem] font-bold">
                                                 {item.name}
                                             </p>
-                                            <p className="text-lp-mid text-[0.7rem]">
+                                            <p className="text-[0.7rem] text-[var(--lp-text-mid)]">
                                                 {item.role}
                                             </p>
                                         </div>
@@ -211,174 +247,82 @@ function HomeContent() {
                 </div>
             </section>
 
-            <section className="py-10 sm:py-12">
-                <div className="container">
-                    <Reveal>
-                        <SectionHeading
-                            label="Free tools"
-                            title="Scan first. Rewrite when you’re ready."
-                            subtitle="Try the ATS checker and career tools with no payment. Professional services stay one click away."
-                        />
-                    </Reveal>
-                    <ServiceVisualCards />
-                </div>
-            </section>
+            <hr className="border-[var(--lp-border)]" />
 
-            <section className="bg-[var(--lp-off)] py-10 sm:py-12">
-                <div className="container">
+            <section className="py-10 sm:py-12">
+                <div className="container max-w-[960px]">
                     <Reveal>
                         <SectionHeading
                             label="What we offer"
                             title="From a quick CV fix to a full career kit."
-                            subtitle={`Human-written deliverables. Prices in ${currencyCode} · checkout via ${gatewayName}.`}
+                            subtitle="Individual services or bundled packages, all human-reviewed, delivered to your inbox."
                         />
                     </Reveal>
-                    <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-                        {previewServices.map((service, index) => (
-                            <Reveal key={service.id} delay={index * 0.05}>
-                                <div className="flex h-full flex-col rounded-[10px] border border-[var(--lp-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-                                    <h3 className="text-lp-navy text-sm font-bold">
-                                        {service.name.replace(
-                                            /^CV Rewrite — |^LinkedIn Profile Fix — /,
-                                            '',
-                                        )}
-                                    </h3>
-                                    <p className="text-lp-mid mt-1 line-clamp-2 flex-1 text-[0.78rem]">
-                                        {service.description}
-                                    </p>
-                                    <p className="font-lp-display mt-3 text-[1.35rem] text-[var(--lp-gold-on-light)]">
-                                        {formatPrice(service.price)}
-                                    </p>
-                                </div>
-                            </Reveal>
-                        ))}
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                        {previewServices.map((service, index) => {
+                            const copy =
+                                offerCopy[
+                                service.id as (typeof offerIds)[number]
+                                ];
+
+                            return (
+                                <Reveal key={service.id} delay={index * 0.05}>
+                                    <div className="flex h-full flex-col rounded-[10px] border border-[var(--lp-border)] bg-white p-4">
+                                        <h3 className="text-lp-navy text-[0.9rem] font-bold">
+                                            {copy?.title ?? service.name}
+                                        </h3>
+                                        <p className="text-lp-mid mt-1.5 flex-1 text-[0.78rem] leading-relaxed">
+                                            {copy?.body ?? service.description}
+                                        </p>
+                                        <p className="font-lp-display mt-3 text-[1.35rem] font-extrabold text-[var(--lp-gold-on-light)]">
+                                            {formatPrice(service.price)}
+                                        </p>
+                                    </div>
+                                </Reveal>
+                            );
+                        })}
                     </div>
-                    <Reveal className="mt-6 text-center sm:text-left">
+                    <Reveal className="mt-6">
                         <Link
                             href="/services"
-                            className="btn-lp-navy inline-flex px-5 py-2.5 text-sm"
+                            className="text-lp-navy inline-flex rounded-[5px] border-[1.5px] border-[var(--lp-navy)] bg-transparent px-5 py-2.5 text-sm font-semibold transition hover:bg-[var(--lp-off)]"
                         >
-                            See all services
+                            See All Services
                         </Link>
                     </Reveal>
                 </div>
             </section>
 
-            <section className="py-10 sm:py-12">
-                <div className="container">
-                    <div className="mx-auto max-w-3xl">
-                        <Reveal>
-                            <SectionHeading
-                                label="How it works"
-                                title="Four simple steps."
-                            />
-                        </Reveal>
-                        <div className="space-y-0">
-                            {howSteps.map((step, index) => (
-                                <Reveal key={step.title} delay={index * 0.05}>
-                                    <div className="flex gap-3 border-b border-[var(--lp-border)] py-4 last:border-b-0 sm:gap-4">
-                                        <div className="bg-lp-navy text-lp-gold font-lp-display flex h-9 w-9 shrink-0 items-center justify-center rounded text-lg">
-                                            {index + 1}
-                                        </div>
-                                        <div className="min-w-0">
-                                            <h4 className="text-lp-navy text-[0.88rem] font-bold">
-                                                {step.title}
-                                            </h4>
-                                            <p className="text-lp-mid mt-1 text-[0.78rem] leading-relaxed">
-                                                {step.body}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Reveal>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <hr className="border-[var(--lp-border)]" />
 
-            <section className="pb-12 sm:pb-14">
-                <div className="container">
-                    <div className="mx-auto max-w-3xl">
-                        <Reveal>
-                            <SectionHeading
-                                label="FAQ"
-                                title="Common questions, answered."
-                            />
-                        </Reveal>
-                        <div className="space-y-2">
-                            {launchpadFaqs.slice(0, 5).map((faq, index) => {
-                                const open = openFaq === index;
-
-                                return (
-                                    <Reveal
-                                        key={faq.question}
-                                        delay={index * 0.03}
-                                    >
-                                        <div className="overflow-hidden rounded-xl border border-[var(--lp-border)] bg-white shadow-sm">
-                                            <button
-                                                type="button"
-                                                className="text-lp-navy flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold"
-                                                onClick={() =>
-                                                    setOpenFaq(
-                                                        open ? null : index,
-                                                    )
-                                                }
-                                            >
-                                                <span className="min-w-0">
-                                                    {faq.question}
-                                                </span>
-                                                <span className="text-lp-gold shrink-0 text-lg">
-                                                    {open ? '−' : '+'}
-                                                </span>
-                                            </button>
-                                            {open ? (
-                                                <p className="text-lp-mid px-4 pb-4 text-[0.82rem] leading-relaxed">
-                                                    {faq.answer}
-                                                </p>
-                                            ) : null}
-                                        </div>
-                                    </Reveal>
-                                );
-                            })}
-                        </div>
-                        <Reveal className="mt-5 text-center">
-                            <Link
-                                href="/services"
-                                className="text-lp-navy text-sm font-semibold underline-offset-4 hover:underline"
-                            >
-                                View full pricing &amp; FAQ →
-                            </Link>
-                        </Reveal>
-                    </div>
-                </div>
-            </section>
-
-            <section className="border-t border-[var(--lp-border)] bg-lp-navy py-12 text-center">
-                <div className="container">
-                    <p className="mb-2 text-[0.7rem] font-medium tracking-[0.08em] text-[rgba(201,168,90,0.85)] uppercase">
+            <section className="bg-white py-10 text-center sm:py-12">
+                <div className="container max-w-[960px]">
+                    <p className="mb-2 text-[0.68rem] font-bold tracking-[0.14em] text-[var(--lp-gold-on-light-sm)] uppercase">
                         Ready to stand out?
                     </p>
-                    <h2 className="font-lp-display text-[clamp(1.6rem,4vw,2.4rem)] text-white">
+                    <h2 className="font-lp-display text-lp-navy text-[clamp(1.5rem,4vw,2.2rem)] font-bold">
                         Start{' '}
-                        <span className="text-lp-gold">free</span> and
-                        upgrade when ready.
+                        <span className="text-[var(--lp-gold-on-light)]">
+                            free
+                        </span>{' '}
+                        and upgrade when ready.
                     </h2>
-                    <p className="mx-auto mt-3 max-w-md text-sm text-white/65">
-                        Free tools give instant feedback. When you want a human
-                        expert, we’re here.
+                    <p className="text-lp-mid mx-auto mt-3 max-w-[380px] text-[0.88rem] leading-relaxed">
+                        The free tools give instant AI feedback. When you want a
+                        human expert, we&apos;re here.
                     </p>
                     <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
                         <Link
                             href="/services"
                             className="btn-lp-gold inline-flex px-5 py-2.5 text-sm"
                         >
-                            Order a service
+                            Order a Service
                         </Link>
                         <Link
                             href="/tools"
-                            className="inline-flex rounded-[5px] border border-white/30 px-5 py-2.5 text-sm font-semibold text-white/90 transition hover:border-white/55"
+                            className="text-lp-navy inline-flex rounded-[5px] border-[1.5px] border-[var(--lp-navy)] bg-transparent px-5 py-2.5 text-sm font-semibold transition hover:bg-[var(--lp-off)]"
                         >
-                            Try free tools first
+                            Try Free Tools First
                         </Link>
                     </div>
                 </div>

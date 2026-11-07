@@ -319,7 +319,7 @@ export const launchpadServices: LaunchpadService[] = [
         eta: '1–2 business days',
         category: 'kit',
         group: 'package',
-        badge: 'Best for Job Hunters',
+        badge: 'Hunter',
         features: [
             'CV Rewrite',
             'LinkedIn Profile Fix',
@@ -337,8 +337,8 @@ export const launchpadServices: LaunchpadService[] = [
         eta: '3–5 business days',
         category: 'other',
         group: 'portfolio',
-        badge: 'From',
-        unit: 'base + R100/project',
+        badge: 'Base',
+        unit: 'from',
         features: [
             'Cover page',
             'Intro & bio page',
@@ -356,8 +356,8 @@ export const launchpadServices: LaunchpadService[] = [
         eta: '3–5 business days',
         category: 'other',
         group: 'portfolio',
-        badge: 'From',
-        unit: 'base + R100/project',
+        badge: 'Base',
+        unit: 'from',
         features: [
             'Site structure & navigation',
             'Intro & bio page',

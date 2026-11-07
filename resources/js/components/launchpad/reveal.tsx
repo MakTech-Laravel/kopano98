@@ -52,7 +52,7 @@ export function Reveal({
                 scale: offset.scale ?? 1,
             }}
             whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.18 }}
+            viewport={{ once: true, amount: 0.01, margin: '0px 0px -8% 0px' }}
             transition={{
                 duration,
                 delay,
@@ -108,7 +108,9 @@ export function Stagger({
             }}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.12 }}
+            // Tall mobile grids (e.g. /templates 1-col) can exceed the viewport;
+            // requiring a % of the whole grid never fires and cards stay opacity 0.
+            viewport={{ once: true, amount: 0.01, margin: '120px 0px' }}
         >
             {children}
         </motion.div>

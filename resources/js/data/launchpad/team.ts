@@ -14,7 +14,7 @@ export const launchpadTeam: LaunchpadTeamMember[] = [
         role: 'Founder · Career Strategist',
         bio: 'Built Launchpad around the gap between what someone can do and whether a recruiter sees it — Deep Scan, LinkedIn Pro, and hands-on CV work that stays current with real hiring.',
         tags: ['Strategy', 'Deep Scan', 'Coaching'],
-        image: '/images/launchpad/team/kopano.jpg',
+        image: '/images/launchpad/ref-images/kopano-thantsha.jpg',
     },
     {
         id: 'writer-a',
