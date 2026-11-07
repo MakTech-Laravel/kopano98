@@ -114,7 +114,7 @@ export function ServiceCard({
                     </div>
                     <button
                         type="button"
-                        className="btn-lp-navy mt-3 w-full py-2.5 text-[0.82rem]"
+                        className="btn-lp-navy mt-3 w-full max-w-full py-2.5 text-[0.8rem]"
                         onClick={() => {
                             addService(service);
                             toast.success(`${service.name} added to cart`);

@@ -1,4 +1,4 @@
-import {
+﻿import {
     cvContactLine,
     cvInitials,
     defaultCvDocument,

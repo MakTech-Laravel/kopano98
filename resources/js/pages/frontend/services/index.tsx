@@ -48,7 +48,7 @@ export default function ServicesIndex() {
                                     />
                                 </Reveal>
                                 {group.id === 'linkedin' ? (
-                                    <p className="text-lp-mid mb-5 max-w-3xl text-[0.82rem] leading-relaxed sm:mx-auto sm:text-center">
+                                    <p className="text-lp-mid mx-auto mb-5 max-w-2xl text-center text-[0.82rem] leading-relaxed">
                                         Your LinkedIn profile and your CV get
                                         checked against each other. One tells a
                                         strong story, the other reinforces it —
@@ -57,10 +57,12 @@ export default function ServicesIndex() {
                                     </p>
                                 ) : null}
                                 <div
-                                    className={`grid gap-4 ${group.id === 'package' ||
-                                        group.id === 'portfolio'
-                                        ? 'sm:grid-cols-2'
-                                        : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                                    className={`grid gap-3 sm:gap-4 ${group.id === 'linkedin'
+                                            ? 'mx-auto max-w-5xl sm:grid-cols-2 lg:grid-cols-4'
+                                            : group.id === 'package' ||
+                                                group.id === 'portfolio'
+                                                ? 'sm:grid-cols-2'
+                                                : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                                         }`}
                                 >
                                     {items.map((service, index) => (

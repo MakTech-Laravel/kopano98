@@ -13,7 +13,11 @@ import {
     type TemplateFilters,
 } from '@/components/launchpad/templates/filter-sidebar';
 import { TemplateCard } from '@/components/launchpad/templates/template-card';
-import { launchpadTemplates } from '@/data/launchpad/templates';
+import { TemplateEditModal } from '@/components/launchpad/templates/template-edit-modal';
+import {
+    launchpadTemplates,
+    type LaunchpadTemplate,
+} from '@/data/launchpad/templates';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
 
 const AtmosphereScene = lazy(() =>
@@ -33,6 +37,8 @@ const defaultFilters: TemplateFilters = {
 
 export default function TemplatesIndex() {
     const [filters, setFilters] = useState<TemplateFilters>(defaultFilters);
+    const [editingTemplate, setEditingTemplate] =
+        useState<LaunchpadTemplate | null>(null);
     const reduceMotion = useReducedMotion();
 
     const filtered = useMemo(() => {
@@ -132,7 +138,7 @@ export default function TemplatesIndex() {
                         className="hidden justify-end md:flex"
                     >
                         <motion.img
-                            src="/images/launchpad/templates/executive.png"
+                            src="/images/launchpad/templates/executive.webp"
                             alt="Executive CV template preview"
                             className="w-full max-w-[240px] rounded-xl border border-white/10 shadow-2xl"
                             loading="lazy"
@@ -157,7 +163,7 @@ export default function TemplatesIndex() {
 
             <section className="py-8 sm:py-10">
                 <div className="container">
-                    <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+                    <div className="grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-6">
                         <Reveal direction="left">
                             <FilterSidebar
                                 filters={filters}
@@ -166,6 +172,18 @@ export default function TemplatesIndex() {
                             />
                         </Reveal>
                         <div className="min-w-0">
+                            <p className="text-lp-light mb-4 text-[0.78rem] leading-snug">
+                                <span className="text-lp-navy font-semibold">
+                                    Live templates
+                                </span>{' '}
+                                — hover a colour swatch to preview accents, then
+                                click{' '}
+                                <span className="text-lp-navy font-semibold">
+                                    Build My CV
+                                </span>{' '}
+                                to open the customizer.
+                            </p>
+
                             {filtered.length === 0 ? (
                                 <p className="text-lp-light py-16 text-center text-sm">
                                     No templates match these filters. Reset to see
@@ -173,12 +191,15 @@ export default function TemplatesIndex() {
                                 </p>
                             ) : (
                                 <Stagger
-                                    className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
+                                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3"
                                     stagger={0.05}
                                 >
                                     {filtered.map((template) => (
                                         <StaggerItem key={template.id}>
-                                            <TemplateCard template={template} />
+                                            <TemplateCard
+                                                template={template}
+                                                onBuild={setEditingTemplate}
+                                            />
                                         </StaggerItem>
                                     ))}
                                 </Stagger>
@@ -187,6 +208,13 @@ export default function TemplatesIndex() {
                     </div>
                 </div>
             </section>
+
+            {editingTemplate ? (
+                <TemplateEditModal
+                    template={editingTemplate}
+                    onClose={() => setEditingTemplate(null)}
+                />
+            ) : null}
         </LaunchpadLayout>
     );
 }

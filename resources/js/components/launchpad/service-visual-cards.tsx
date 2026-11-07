@@ -129,14 +129,14 @@ function Visual({ kind }: { kind: 'ats' | 'linkedin' | 'letter' }) {
 
 export function ServiceVisualCards() {
     return (
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
             {visuals.map((tool, index) => (
                 <Reveal key={tool.title} delay={index * 0.05}>
                     <Link
                         href={tool.href}
-                        className="group block h-full overflow-hidden rounded-[10px] border border-[var(--lp-border)] bg-white transition hover:border-[var(--lp-navy-3)] hover:shadow-[0_12px_28px_rgba(13,27,42,0.08)]"
+                        className="group block h-full overflow-hidden rounded-[10px] border border-[var(--lp-border)] bg-white transition duration-300 hover:-translate-y-1 hover:border-[var(--lp-navy-3)] hover:shadow-[0_12px_28px_rgba(13,27,42,0.08)]"
                     >
-                        <div className="aspect-[16/10] overflow-hidden bg-[var(--lp-off)] transition duration-500 group-hover:brightness-[1.03]">
+                        <div className="aspect-[16/10] overflow-hidden bg-[var(--lp-off)] transition duration-500 group-hover:scale-[1.02] group-hover:brightness-[1.03]">
                             <Visual kind={tool.kind} />
                         </div>
                         <div className="p-5">

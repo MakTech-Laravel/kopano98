@@ -33,11 +33,11 @@ export function CvTemplateSlider() {
                         Template gallery
                     </p>
                     <h2 className="font-lp-display text-lp-navy text-[clamp(1.65rem,4vw,2.35rem)] leading-[1.15]">
-                        Six to eight hire-ready CV looks, not one static image.
+                        Explore the full template library.
                     </h2>
                     <p className="text-lp-mid mt-2.5 max-w-xl text-[0.92rem] leading-relaxed">
-                        Browse live template previews, then open the builder with
-                        your chosen layout already loaded.
+                        Same live layouts as the hero — filter by photo, columns,
+                        and style, then customise before you download.
                     </p>
                 </div>
 
@@ -81,11 +81,10 @@ export function CvTemplateSlider() {
                                     key={slide.id}
                                     type="button"
                                     aria-label={`Show ${slide.name}`}
-                                    className={`h-2.5 rounded-full transition-all ${
-                                        slideIndex === index
+                                    className={`h-2.5 rounded-full transition-all ${slideIndex === index
                                             ? 'w-8 bg-[var(--lp-navy)]'
                                             : 'w-2.5 bg-[var(--lp-border)]'
-                                    }`}
+                                        }`}
                                     onClick={() => setIndex(slideIndex)}
                                 />
                             ))}

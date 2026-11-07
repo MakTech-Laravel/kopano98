@@ -93,6 +93,7 @@ function HomeContent() {
                     </>
                 }
                 subtitle="Free ATS check in seconds — plus professional rewrites, LinkedIn fixes, and interview prep from Launchpad Careers."
+                showTemplateCarousel
             />
 
             <div className="bg-lp-navy-2 border-t border-[var(--lp-navy-3)]">
@@ -120,8 +121,8 @@ function HomeContent() {
             </div>
 
             <CompanyLogosSection />
-            <CvTemplateSlider />
             <AtsShowcaseSection />
+            <CvTemplateSlider />
 
             <section className="py-10 sm:py-12">
                 <div className="container">
@@ -232,12 +233,15 @@ function HomeContent() {
                             subtitle={`Human-written deliverables. Prices in ${currencyCode} · checkout via ${gatewayName}.`}
                         />
                     </Reveal>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
                         {previewServices.map((service, index) => (
                             <Reveal key={service.id} delay={index * 0.05}>
-                                <div className="flex h-full flex-col rounded-[10px] border border-[var(--lp-border)] bg-white p-4 shadow-sm">
+                                <div className="flex h-full flex-col rounded-[10px] border border-[var(--lp-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                                     <h3 className="text-lp-navy text-sm font-bold">
-                                        {service.name}
+                                        {service.name.replace(
+                                            /^CV Rewrite — |^LinkedIn Profile Fix — /,
+                                            '',
+                                        )}
                                     </h3>
                                     <p className="text-lp-mid mt-1 line-clamp-2 flex-1 text-[0.78rem]">
                                         {service.description}
@@ -249,7 +253,7 @@ function HomeContent() {
                             </Reveal>
                         ))}
                     </div>
-                    <Reveal className="mt-6">
+                    <Reveal className="mt-6 text-center sm:text-left">
                         <Link
                             href="/services"
                             className="btn-lp-navy inline-flex px-5 py-2.5 text-sm"

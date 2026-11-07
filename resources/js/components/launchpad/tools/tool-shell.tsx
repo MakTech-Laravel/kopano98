@@ -59,13 +59,16 @@ export function ToolShell({
             <h3 className="text-lp-navy mb-1 text-base font-bold">{title}</h3>
             <p className="text-lp-mid mb-4 text-sm">{description}</p>
 
-            <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-[1.5px] border-dashed border-[var(--lp-border)] bg-[var(--lp-off)] px-4 py-8 transition hover:border-[var(--lp-gold)]">
-                <Upload className="text-lp-mid mb-2 h-7 w-7" />
-                <span className="text-lp-navy text-sm font-semibold">
-                    {fileName ?? 'Drop your file here or click to upload'}
+            <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-[1.5px] border-dashed border-[var(--lp-border)] bg-[var(--lp-off)] px-4 py-7 transition hover:border-[var(--lp-gold)]">
+                <Upload className="text-lp-mid mb-2 h-6 w-6" />
+                <span className="btn-lp-navy mt-1 inline-flex px-4 py-2 text-[0.78rem]">
+                    {fileName ? 'Change file' : 'Upload CV'}
                 </span>
-                <span className="text-lp-light mt-1 text-xs">
-                    TXT works best in-browser · PDF/DOCX use filename + paste fallback
+                <span className="text-lp-navy mt-2 max-w-[16rem] truncate text-center text-xs font-medium">
+                    {fileName ?? 'Drop a file or browse'}
+                </span>
+                <span className="text-lp-light mt-1 text-center text-[0.68rem]">
+                    TXT preferred · PDF/DOCX may need paste
                 </span>
                 <input
                     type="file"
