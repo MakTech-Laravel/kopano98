@@ -89,7 +89,7 @@ export function ServiceCard({
     footerSlot,
     priceOverride,
 }: ServiceCardProps) {
-    const { addService, openCart } = useLaunchpadCart();
+    const { addService } = useLaunchpadCart();
     const { formatPrice } = useLaunchpadLocale();
     const isPackage = variant === 'package';
     const isLinkedIn = service.group === 'linkedin';
@@ -105,7 +105,6 @@ export function ServiceCard({
                 ? { ...service, price: priceOverride }
                 : service,
         );
-        openCart();
         toast.success(`${service.name} added to cart`);
     };
 
@@ -116,17 +115,17 @@ export function ServiceCard({
         return (
             <article
                 className={`relative flex h-full flex-col overflow-hidden rounded-[10px] border-[1.5px] bg-white transition hover:shadow-[0_8px_30px_rgba(13,27,42,0.12)] ${featured
-                        ? 'border-[var(--lp-navy)]'
-                        : hunter
-                            ? 'border-[var(--lp-gold-on-light)]'
-                            : 'border-[var(--lp-border)]'
+                    ? 'border-[var(--lp-navy)]'
+                    : hunter
+                        ? 'border-[var(--lp-gold-on-light)]'
+                        : 'border-[var(--lp-border)]'
                     }`}
             >
                 {service.popular || hunter ? (
                     <span
                         className={`absolute top-0 right-0 z-10 rounded-bl-md px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.1em] uppercase ${hunter
-                                ? 'bg-[var(--lp-gold)] text-[var(--lp-navy)]'
-                                : 'bg-[var(--lp-navy)] text-[var(--lp-gold)]'
+                            ? 'bg-[var(--lp-gold)] text-[var(--lp-navy)]'
+                            : 'bg-[var(--lp-navy)] text-[var(--lp-gold)]'
                             }`}
                     >
                         {hunter ? 'Best for Job Hunters' : 'Most Popular'}
@@ -188,8 +187,8 @@ export function ServiceCard({
                             <li
                                 key={feature}
                                 className={`flex items-start gap-2 border-b border-[var(--lp-border)] py-1.5 text-[0.8rem] last:border-b-0 ${isHighlightFeature(feature)
-                                        ? 'text-lp-navy font-semibold'
-                                        : 'text-[var(--lp-text-mid)]'
+                                    ? 'text-lp-navy font-semibold'
+                                    : 'text-[var(--lp-text-mid)]'
                                     }`}
                             >
                                 <span className="mt-0.5 shrink-0 font-bold text-[var(--lp-green)]">
@@ -205,8 +204,8 @@ export function ServiceCard({
                     <button
                         type="button"
                         className={`mt-auto w-full rounded-[5px] py-3 text-[0.83rem] font-bold transition ${featured || hunter || service.unit === 'from'
-                                ? 'bg-lp-navy text-white hover:bg-[var(--lp-navy-2)]'
-                                : 'text-lp-navy border-[1.5px] border-[var(--lp-border)] bg-transparent hover:border-[var(--lp-navy)]'
+                            ? 'bg-lp-navy text-white hover:bg-[var(--lp-navy-2)]'
+                            : 'text-lp-navy border-[1.5px] border-[var(--lp-border)] bg-transparent hover:border-[var(--lp-navy)]'
                             }`}
                         onClick={placeOrder}
                     >
@@ -231,8 +230,8 @@ export function ServiceCard({
             <div className="bg-[linear-gradient(160deg,#1b3250_0%,var(--lp-navy)_70%)] px-[1.15rem] pt-[1.1rem] pb-[0.85rem]">
                 <div
                     className={`mb-2.5 flex h-[38px] w-[38px] items-center justify-center rounded-full shadow-[0_2px_6px_rgba(0,0,0,0.25)] ${isLinkedIn
-                            ? 'bg-[#0a66c2] text-white'
-                            : 'bg-[var(--lp-gold)] text-[var(--lp-navy)]'
+                        ? 'bg-[#0a66c2] text-white'
+                        : 'bg-[var(--lp-gold)] text-[var(--lp-navy)]'
                         }`}
                 >
                     {serviceIcon(service)}
@@ -240,8 +239,8 @@ export function ServiceCard({
                 {service.badge ? (
                     <span
                         className={`mb-1.5 inline-block rounded-[3px] px-1.5 py-0.5 text-[0.63rem] font-bold ${service.badge.toLowerCase().includes('best')
-                                ? 'bg-[rgba(254,243,199,0.95)] text-[#92400e]'
-                                : 'bg-[rgba(219,234,254,0.92)] text-[#1e40af]'
+                            ? 'bg-[rgba(254,243,199,0.95)] text-[#92400e]'
+                            : 'bg-[rgba(219,234,254,0.92)] text-[#1e40af]'
                             }`}
                     >
                         {service.badge}

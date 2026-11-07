@@ -98,7 +98,6 @@ export function LaunchpadCartProvider({ children }: { children: ReactNode }) {
                 },
             ];
         });
-        setIsOpen(true);
     }, []);
 
     const removeItem = useCallback((id: string) => {
