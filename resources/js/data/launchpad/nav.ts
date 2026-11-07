@@ -3,11 +3,12 @@ export type LaunchpadNavItem = {
     href: string;
 };
 
-/** Desktop header — matches Compressed reference (Templates hidden by default). */
+/** Desktop header — Templates is a first-class public page. */
 export const launchpadNav: LaunchpadNavItem[] = [
     { label: 'Home', href: '/' },
     { label: 'Free Tools', href: '/tools' },
     { label: 'Services', href: '/services' },
+    { label: 'Templates', href: '/templates' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
 ];
@@ -17,6 +18,7 @@ export const launchpadMobileNav: LaunchpadNavItem[] = [
     { label: 'Home', href: '/' },
     { label: 'Free Tools', href: '/tools' },
     { label: 'Services & Pricing', href: '/services' },
+    { label: 'Templates', href: '/templates' },
     { label: 'About', href: '/about' },
     { label: 'Contact Us', href: '/contact' },
 ];
