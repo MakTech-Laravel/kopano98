@@ -1,289 +1,267 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import {
+    Briefcase,
+    FileSearch,
+    FileText,
+    LayoutDashboard,
+    UserRound,
+} from 'lucide-react';
+import { useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 
-import { PageBand } from '@/components/launchpad/page-band';
-import { Reveal } from '@/components/launchpad/reveal';
-import { SectionHeading } from '@/components/launchpad/section-heading';
-import {
-    postToolJson,
-    ToolShell,
-} from '@/components/launchpad/tools/tool-shell';
+import { CvScanTool } from '@/components/launchpad/tools/cv-scan-tool';
+import { postToolJson } from '@/components/launchpad/tools/tool-shell';
 import LaunchpadLayout from '@/layouts/launchpad-layout';
 
-const tabs = [
-    { id: 'ats', label: 'ATS Checker' },
-    { id: 'cv', label: 'CV Deep Scan' },
-    { id: 'linkedin', label: 'LinkedIn' },
-    { id: 'letter', label: 'Cover Letter' },
-    { id: 'assistant', label: 'AI Assistant' },
+const tools = [
+    {
+        id: 'cv',
+        label: 'CV Deep Scan',
+        icon: FileText,
+    },
+    {
+        id: 'linkedin',
+        label: 'LinkedIn',
+        icon: UserRound,
+    },
+    {
+        id: 'ats',
+        label: 'ATS Match',
+        icon: FileSearch,
+    },
+    {
+        id: 'jobs',
+        label: 'Find Jobs',
+        icon: Briefcase,
+    },
+    {
+        id: 'dashboard',
+        label: 'Dashboard',
+        icon: LayoutDashboard,
+    },
 ] as const;
 
-type TabId = (typeof tabs)[number]['id'];
+type ToolId = (typeof tools)[number]['id'];
 
 export default function ToolsIndex() {
-    const [active, setActive] = useState<TabId>('ats');
+    const [active, setActive] = useState<ToolId>('cv');
     const [headline, setHeadline] = useState('');
     const [about, setAbout] = useState('');
     const [jobDescription, setJobDescription] = useState('');
-    const [assistantMessage, setAssistantMessage] = useState('');
-    const [assistantReply, setAssistantReply] = useState<string | null>(null);
-    const [assistantBusy, setAssistantBusy] = useState(false);
 
     return (
         <LaunchpadLayout>
             <Head title="Free Tools | Launchpad Careers" />
 
-            <PageBand className="py-10 text-center sm:py-12">
-                <h1 className="font-lp-display text-[clamp(1.85rem,5vw,2.85rem)] text-white">
-                    Free career tools
-                </h1>
-                <p className="mx-auto mt-3 max-w-lg text-sm text-pretty text-white/70">
-                    Run an ATS check, deep CV scan, LinkedIn review, cover letter
-                    draft, or ask the assistant — results come from the live
-                    analysis API.
-                </p>
-            </PageBand>
-
-            <section className="py-8 sm:py-10">
+            <section className="min-h-[calc(100vh-4.5rem)] bg-[#f3f4f6] py-10 sm:py-12">
                 <div className="container">
-                    <div className="mx-auto max-w-4xl">
-                        <Reveal>
-                            <SectionHeading
-                                label="Toolkit"
-                                title="Pick a tool and upload or paste your content."
-                            />
-                        </Reveal>
+                    <div className="mb-8 max-w-3xl">
+                        <p className="mb-2 text-[0.72rem] font-bold tracking-[0.12em] text-[#C8A84B] uppercase">
+                            Free Tools
+                        </p>
+                        <h1 className="font-lp-display text-[clamp(1.85rem,4.5vw,2.65rem)] leading-[1.15] text-[#0d1b2a]">
+                            See how your CV or LinkedIn looks.
+                        </h1>
+                    </div>
 
-                        <Reveal delay={0.06}>
-                            <div className="-mx-1 mb-5 flex overflow-x-auto rounded-md border border-[var(--lp-border)] px-0 sm:mx-0">
-                                {tabs.map((tab) => (
-                                    <button
-                                        key={tab.id}
-                                        type="button"
-                                        onClick={() => setActive(tab.id)}
-                                        className={`flex-none border-r border-[var(--lp-border)] px-3 py-2.5 text-[0.72rem] font-semibold whitespace-nowrap last:border-r-0 sm:px-4 sm:text-[0.78rem] ${
-                                            active === tab.id
-                                                ? 'bg-lp-navy text-white'
-                                                : 'bg-[var(--lp-off)] text-[var(--lp-text-mid)]'
-                                        }`}
-                                    >
-                                        {tab.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </Reveal>
+                    <div className="grid items-start gap-5 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-8">
+                        <aside className="rounded-[12px] border border-[#e5e7eb] bg-white p-2 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+                            <nav className="space-y-0.5">
+                                {tools.map((tool) => {
+                                    const Icon = tool.icon;
+                                    const selected = active === tool.id;
 
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={active}
-                                initial={{ opacity: 0, y: 12 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
-                                transition={{
-                                    duration: 0.28,
-                                    ease: [0.22, 1, 0.36, 1],
-                                }}
-                            >
-                                {active === 'ats' || active === 'cv' ? (
-                                    <ToolShell
-                                        title={
-                                            active === 'ats'
-                                                ? 'ATS CV Checker'
-                                                : 'CV Deep Scan'
-                                        }
-                                        description={
-                                            active === 'ats'
-                                                ? 'Upload a CV to get a match score against common ATS rules.'
-                                                : 'Surface weak verbs, missing metrics, and structure issues.'
-                                        }
-                                        actionLabel={
-                                            active === 'ats'
-                                                ? 'Check ATS score'
-                                                : 'Start deep scan'
-                                        }
-                                        onAnalyze={async ({ rawText, fileName }) => {
-                                            const payload = await postToolJson<{
-                                                score: number;
-                                                summary: string;
-                                                suggestions: string[];
-                                                issues: {
-                                                    label: string;
-                                                    severity: string;
-                                                }[];
-                                            }>('/tools/cv-analyze', {
-                                                raw_text: rawText || fileName,
-                                                summary: rawText.slice(0, 500),
-                                                skills: [],
-                                                experience: [],
-                                            });
-
-                                            return (
-                                                <div>
-                                                    <p className="text-sm font-bold text-emerald-800">
-                                                        ATS match: {payload.score}
-                                                        /100
-                                                    </p>
-                                                    <p className="mt-1 text-xs text-emerald-700">
-                                                        {payload.summary}
-                                                    </p>
-                                                    <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-emerald-700">
-                                                        {payload.suggestions.map(
-                                                            (item) => (
-                                                                <li key={item}>
-                                                                    {item}
-                                                                </li>
-                                                            ),
-                                                        )}
-                                                    </ul>
-                                                </div>
-                                            );
-                                        }}
-                                    />
-                                ) : null}
-
-                                {active === 'linkedin' ? (
-                                    <div className="rounded-lg border border-[var(--lp-border)] bg-white p-5">
-                                        <h3 className="text-lp-navy mb-1 text-base font-bold">
-                                            LinkedIn profile scan
-                                        </h3>
-                                        <p className="text-lp-mid mb-4 text-sm">
-                                            Paste your headline and About section
-                                            for clarity and completeness scores.
-                                        </p>
-                                        <label className="mb-3 block text-sm">
-                                            <span className="text-lp-navy mb-1 block font-semibold">
-                                                Headline
-                                            </span>
-                                            <input
-                                                className="w-full rounded border border-[var(--lp-border)] px-3 py-2 text-sm"
-                                                value={headline}
-                                                onChange={(event) =>
-                                                    setHeadline(event.target.value)
-                                                }
+                                    return (
+                                        <button
+                                            key={tool.id}
+                                            type="button"
+                                            onClick={() => setActive(tool.id)}
+                                            className={`flex w-full items-center gap-2.5 rounded-[8px] px-3 py-2.5 text-left text-[0.8rem] font-semibold transition ${selected
+                                                ? 'border-l-[3px] border-[#C8A84B] bg-[#f8fafc] text-[#1B3A6B]'
+                                                : 'border-l-[3px] border-transparent text-[#64748b] hover:bg-[#f8fafc]'
+                                                }`}
+                                        >
+                                            <Icon
+                                                className="h-4 w-4 shrink-0"
+                                                strokeWidth={1.8}
                                             />
-                                        </label>
-                                        <label className="mb-4 block text-sm">
-                                            <span className="text-lp-navy mb-1 block font-semibold">
-                                                About
-                                            </span>
-                                            <textarea
-                                                rows={5}
-                                                className="w-full rounded border border-[var(--lp-border)] px-3 py-2 text-sm"
-                                                value={about}
-                                                onChange={(event) =>
-                                                    setAbout(event.target.value)
-                                                }
-                                            />
-                                        </label>
-                                        <LinkedInAnalyzeButton
-                                            headline={headline}
-                                            about={about}
-                                        />
-                                    </div>
-                                ) : null}
+                                            <span>{tool.label}</span>
+                                        </button>
+                                    );
+                                })}
+                            </nav>
+                        </aside>
 
-                                {active === 'letter' ? (
-                                    <div className="rounded-lg border border-[var(--lp-border)] bg-white p-5">
-                                        <h3 className="text-lp-navy mb-1 text-base font-bold">
-                                            Cover letter generator
-                                        </h3>
-                                        <p className="text-lp-mid mb-4 text-sm">
-                                            Paste a job description to generate a
-                                            tailored draft.
-                                        </p>
-                                        <textarea
-                                            rows={7}
-                                            className="mb-4 w-full rounded border border-[var(--lp-border)] px-3 py-2 text-sm"
-                                            placeholder="Paste the job description…"
-                                            value={jobDescription}
-                                            onChange={(event) =>
-                                                setJobDescription(event.target.value)
+                        <div className="min-w-0">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={active}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                    transition={{ duration: 0.25 }}
+                                >
+                                    {active === 'cv' || active === 'ats' ? (
+                                        <CvScanTool
+                                            mode={
+                                                active === 'ats' ? 'ats' : 'deep'
                                             }
                                         />
-                                        <CoverLetterButton
-                                            jobDescription={jobDescription}
-                                        />
-                                    </div>
-                                ) : null}
+                                    ) : null}
 
-                                {active === 'assistant' ? (
-                                    <div className="rounded-lg border border-[var(--lp-border)] bg-white p-4 sm:p-5">
-                                        <h3 className="text-lp-navy mb-1 text-base font-bold">
-                                            AI CV Assistant
-                                        </h3>
-                                        <p className="text-lp-mid mb-4 text-sm">
-                                            Ask for ATS, LinkedIn, or cover-letter
-                                            guidance.
-                                        </p>
-                                        {assistantReply ? (
-                                            <div className="mb-3 space-y-2 rounded-md bg-[var(--lp-off)] p-3 text-sm">
-                                                <p className="text-lp-navy font-semibold">
-                                                    Assistant
-                                                </p>
-                                                <p className="text-lp-mid">
-                                                    {assistantReply}
-                                                </p>
-                                            </div>
-                                        ) : null}
-                                        <div className="flex flex-col gap-2 sm:flex-row">
-                                            <input
-                                                className="min-w-0 flex-1 rounded-md border border-[var(--lp-border)] px-3 py-2 text-sm"
-                                                placeholder="Ask a career question…"
-                                                value={assistantMessage}
-                                                onChange={(event) =>
-                                                    setAssistantMessage(
-                                                        event.target.value,
-                                                    )
-                                                }
+                                    {active === 'linkedin' ? (
+                                        <ToolCard
+                                            title="LinkedIn Scan"
+                                            description="Upload your LinkedIn profile as a PDF and get a full report — headline, About section, experience, skills and keyword gaps all checked."
+                                        >
+                                            <label className="mb-3 block text-sm">
+                                                <span className="mb-1.5 block text-[0.75rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
+                                                    Headline
+                                                </span>
+                                                <input
+                                                    className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] outline-none focus:border-[#1B3A6B]"
+                                                    value={headline}
+                                                    onChange={(event) =>
+                                                        setHeadline(
+                                                            event.target.value,
+                                                        )
+                                                    }
+                                                    placeholder="Paste your LinkedIn headline"
+                                                />
+                                            </label>
+                                            <label className="mb-4 block text-sm">
+                                                <span className="mb-1.5 block text-[0.75rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
+                                                    About
+                                                </span>
+                                                <textarea
+                                                    rows={5}
+                                                    className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] outline-none focus:border-[#1B3A6B]"
+                                                    value={about}
+                                                    onChange={(event) =>
+                                                        setAbout(
+                                                            event.target.value,
+                                                        )
+                                                    }
+                                                    placeholder="Paste your About section"
+                                                />
+                                            </label>
+                                            <LinkedInAnalyzeButton
+                                                headline={headline}
+                                                about={about}
                                             />
+                                        </ToolCard>
+                                    ) : null}
+
+                                    {active === 'jobs' ? (
+                                        <ToolCard
+                                            title="Find Jobs"
+                                            description="Browse live vacancies and see how your CV matches each role."
+                                        >
+                                            <label className="mb-4 block">
+                                                <span className="mb-1.5 block text-[0.75rem] font-bold tracking-wide text-[#1B3A6B] uppercase">
+                                                    What are you looking for?
+                                                </span>
+                                                <input
+                                                    className="w-full rounded-md border border-[#e5e7eb] px-3 py-2.5 text-[0.84rem] outline-none focus:border-[#1B3A6B]"
+                                                    placeholder="e.g. Project Manager in Johannesburg"
+                                                    value={jobDescription}
+                                                    onChange={(event) =>
+                                                        setJobDescription(
+                                                            event.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+                                            <div className="mb-4 flex flex-wrap gap-2">
+                                                {[
+                                                    'Full-time Role',
+                                                    'Internship',
+                                                    'Vacation Work',
+                                                ].map((chip) => (
+                                                    <span
+                                                        key={chip}
+                                                        className="rounded-full border border-[#e5e7eb] bg-[#f8fafc] px-3 py-1 text-[0.74rem] font-semibold text-[#1B3A6B]"
+                                                    >
+                                                        {chip}
+                                                    </span>
+                                                ))}
+                                            </div>
                                             <button
                                                 type="button"
-                                                className="btn-lp-gold px-4 py-2 text-sm sm:shrink-0"
-                                                disabled={
-                                                    assistantBusy ||
-                                                    !assistantMessage.trim()
+                                                className="w-full rounded-lg bg-[#1B3A6B] px-5 py-3 text-[0.9rem] font-extrabold text-white"
+                                                onClick={() =>
+                                                    toast.message(
+                                                        'Job finder demo — connect live boards next',
+                                                    )
                                                 }
-                                                onClick={() => {
-                                                    void (async () => {
-                                                        setAssistantBusy(true);
-
-                                                        try {
-                                                            const payload =
-                                                                await postToolJson<{
-                                                                    reply: string;
-                                                                }>(
-                                                                    '/tools/assistant',
-                                                                    {
-                                                                        message:
-                                                                            assistantMessage,
-                                                                    },
-                                                                );
-                                                            setAssistantReply(
-                                                                payload.reply,
-                                                            );
-                                                        } catch {
-                                                            toast.error(
-                                                                'Assistant unavailable',
-                                                            );
-                                                        } finally {
-                                                            setAssistantBusy(false);
-                                                        }
-                                                    })();
-                                                }}
                                             >
-                                                {assistantBusy ? '…' : 'Send'}
+                                                Search jobs
                                             </button>
-                                        </div>
-                                    </div>
-                                ) : null}
-                            </motion.div>
-                        </AnimatePresence>
+                                        </ToolCard>
+                                    ) : null}
+
+                                    {active === 'dashboard' ? (
+                                        <ToolCard
+                                            title="My Dashboard"
+                                            description="Everything in one place: the CV the tools are using, the reports you have run, and the jobs you have saved."
+                                        >
+                                            <div className="rounded-[10px] border border-dashed border-[#d1d5db] bg-[#fafafa] px-4 py-8 text-center">
+                                                <p className="text-[0.9rem] font-bold text-[#1B3A6B]">
+                                                    No scans saved yet
+                                                </p>
+                                                <p className="mt-1 text-[0.8rem] text-[#64748b]">
+                                                    Run a CV Deep Scan to see your
+                                                    first report here.
+                                                </p>
+                                                <button
+                                                    type="button"
+                                                    className="mt-4 rounded-lg bg-[#1B3A6B] px-4 py-2.5 text-[0.8rem] font-bold text-white"
+                                                    onClick={() => setActive('cv')}
+                                                >
+                                                    Open CV Deep Scan
+                                                </button>
+                                            </div>
+                                            <p className="mt-4 text-center text-[0.78rem] text-[#64748b]">
+                                                Looking for paid rewrites?{' '}
+                                                <Link
+                                                    href="/services"
+                                                    className="font-semibold text-[#1B3A6B] underline-offset-2 hover:underline"
+                                                >
+                                                    View services
+                                                </Link>
+                                            </p>
+                                        </ToolCard>
+                                    ) : null}
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
                     </div>
                 </div>
             </section>
         </LaunchpadLayout>
+    );
+}
+
+function ToolCard({
+    title,
+    description,
+    children,
+}: {
+    title: string;
+    description: string;
+    children: ReactNode;
+}) {
+    return (
+        <div className="mx-auto w-full max-w-[560px] rounded-[14px] border border-[#e5e7eb] bg-white p-7 text-left shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-8">
+            <h2 className="mb-1.5 text-[1.15rem] font-bold text-[#1B3A6B]">
+                {title}
+            </h2>
+            <p className="mb-6 text-[0.85rem] leading-relaxed text-[#666]">
+                {description}
+            </p>
+            {children}
+        </div>
     );
 }
 
@@ -301,7 +279,7 @@ function LinkedInAnalyzeButton({
         <>
             <button
                 type="button"
-                className="btn-lp-navy px-5 py-2.5 text-sm"
+                className="w-full rounded-lg bg-[#1B3A6B] px-5 py-3 text-[0.9rem] font-extrabold text-white disabled:opacity-40"
                 disabled={busy || (!headline && !about)}
                 onClick={() => {
                     void (async () => {
@@ -332,50 +310,6 @@ function LinkedInAnalyzeButton({
                 <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
                     {result}
                 </p>
-            ) : null}
-        </>
-    );
-}
-
-function CoverLetterButton({ jobDescription }: { jobDescription: string }) {
-    const [draft, setDraft] = useState<string | null>(null);
-    const [busy, setBusy] = useState(false);
-
-    return (
-        <>
-            <button
-                type="button"
-                className="btn-lp-navy px-5 py-2.5 text-sm"
-                disabled={busy || jobDescription.trim().length < 20}
-                onClick={() => {
-                    void (async () => {
-                        setBusy(true);
-
-                        try {
-                            const payload = await postToolJson<{ draft: string }>(
-                                '/tools/cover-letter',
-                                {
-                                    job_description: jobDescription,
-                                    candidate_name: 'Applicant',
-                                    role_title: 'the role',
-                                },
-                            );
-                            setDraft(payload.draft);
-                            toast.success('Draft ready');
-                        } catch {
-                            toast.error('Could not generate draft');
-                        } finally {
-                            setBusy(false);
-                        }
-                    })();
-                }}
-            >
-                {busy ? 'Generating…' : 'Generate draft'}
-            </button>
-            {draft ? (
-                <pre className="mt-4 whitespace-pre-wrap rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm leading-relaxed text-emerald-900">
-                    {draft}
-                </pre>
             ) : null}
         </>
     );

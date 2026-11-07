@@ -2,10 +2,28 @@ import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { TemplatePreview } from '@/components/launchpad/templates/template-preview';
 import { launchpadTemplates } from '@/data/launchpad/templates';
 
-const slides = launchpadTemplates.slice(0, 8);
+const galleryIds = [
+    'classic',
+    'minimal',
+    'elegant',
+    'executive',
+    'modern',
+    'graduate',
+    'stripe',
+    'heritage',
+] as const;
+
+const slides = galleryIds
+    .map((id) => launchpadTemplates.find((template) => template.id === id))
+    .filter((template): template is (typeof launchpadTemplates)[number] =>
+        Boolean(template),
+    )
+    .map((template) => ({
+        ...template,
+        frame: `/images/launchpad/templates/${template.id}.png`,
+    }));
 
 export function CvTemplateSlider() {
     const reduceMotion = useReducedMotion();
@@ -36,8 +54,8 @@ export function CvTemplateSlider() {
                         Explore the full template library.
                     </h2>
                     <p className="text-lp-mid mt-2.5 max-w-xl text-[0.92rem] leading-relaxed">
-                        Same live layouts as the hero — filter by photo, columns,
-                        and style, then customise before you download.
+                        Same Launchpad template frames as the hero — then open
+                        the library to filter by photo, columns, and style.
                     </p>
                 </div>
 
@@ -58,11 +76,14 @@ export function CvTemplateSlider() {
                                         : { opacity: 0, x: -24 }
                                 }
                                 transition={{ duration: 0.35 }}
-                                className="aspect-[3/4]"
+                                className="aspect-[3/4] overflow-hidden rounded-[8px] bg-[#eef1f5]"
                             >
-                                <TemplatePreview
-                                    template={template}
-                                    accent={template.colors[0]}
+                                <img
+                                    src={template.frame}
+                                    alt={`${template.name} CV template`}
+                                    className="h-full w-full object-cover object-top"
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                             </motion.div>
                         </AnimatePresence>
@@ -82,8 +103,8 @@ export function CvTemplateSlider() {
                                     type="button"
                                     aria-label={`Show ${slide.name}`}
                                     className={`h-2.5 rounded-full transition-all ${slideIndex === index
-                                            ? 'w-8 bg-[var(--lp-navy)]'
-                                            : 'w-2.5 bg-[var(--lp-border)]'
+                                        ? 'w-8 bg-[var(--lp-navy)]'
+                                        : 'w-2.5 bg-[var(--lp-border)]'
                                         }`}
                                     onClick={() => setIndex(slideIndex)}
                                 />

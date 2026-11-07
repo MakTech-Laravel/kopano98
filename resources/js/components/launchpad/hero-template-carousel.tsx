@@ -2,20 +2,40 @@ import { Link } from '@inertiajs/react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { TemplatePreview } from '@/components/launchpad/templates/template-preview';
 import { launchpadTemplates } from '@/data/launchpad/templates';
 
-const slides = launchpadTemplates.slice(0, 8);
+/** Hero slides use the Launchpad PNG frames from the reference images folder. */
+const heroSlideIds = [
+    'classic',
+    'minimal',
+    'elegant',
+    'executive',
+    'modern',
+    'graduate',
+    'stripe',
+    'heritage',
+] as const;
+
+const slides = heroSlideIds
+    .map((id) => launchpadTemplates.find((template) => template.id === id))
+    .filter((template): template is (typeof launchpadTemplates)[number] =>
+        Boolean(template),
+    )
+    .map((template) => ({
+        ...template,
+        // Prefer the original PNG frames for the hero carousel.
+        frame: `/images/launchpad/templates/${template.id === 'sidebar-navy' ? 'sidebarNavy' : template.id}.png`,
+    }));
 
 /**
- * Compact rotating CV template stack for the home hero.
+ * Compact rotating CV template stack for the home hero — real PNG frames only.
  */
 export function HeroTemplateCarousel() {
     const reduceMotion = useReducedMotion();
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        if (reduceMotion) {
+        if (reduceMotion || slides.length === 0) {
             return;
         }
 
@@ -28,14 +48,20 @@ export function HeroTemplateCarousel() {
 
     const template = slides[index];
 
+    if (!template) {
+        return null;
+    }
+
     return (
         <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[300px]">
             <div className="absolute -inset-3 rounded-[18px] bg-[radial-gradient(circle_at_30%_20%,rgba(212,168,66,0.22),transparent_55%)]" />
-            <div className="relative overflow-hidden rounded-[14px] bg-white/95 p-2.5 shadow-[0_22px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
+            <div className="relative overflow-hidden rounded-[14px] bg-white/95 p-1.5 shadow-[0_22px_50px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={template.id}
-                        initial={reduceMotion ? false : { opacity: 0, rotate: 2, y: 12 }}
+                        initial={
+                            reduceMotion ? false : { opacity: 0, rotate: 2, y: 12 }
+                        }
                         animate={{ opacity: 1, rotate: 0, y: 0 }}
                         exit={
                             reduceMotion
@@ -43,11 +69,14 @@ export function HeroTemplateCarousel() {
                                 : { opacity: 0, rotate: -2, y: -10 }
                         }
                         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="aspect-[3/4]"
+                        className="aspect-[3/4] overflow-hidden rounded-[10px] bg-[#eef1f5]"
                     >
-                        <TemplatePreview
-                            template={template}
-                            accent={template.colors[0]}
+                        <img
+                            src={template.frame}
+                            alt={`${template.name} CV template`}
+                            className="h-full w-full object-cover object-top"
+                            loading="eager"
+                            decoding="async"
                         />
                     </motion.div>
                 </AnimatePresence>

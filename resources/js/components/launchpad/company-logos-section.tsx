@@ -1,12 +1,36 @@
 const companies = [
-    { name: 'Amazon', mark: 'amazon', weight: 700 },
-    { name: 'ABSA', mark: 'ABSA', weight: 800 },
-    { name: 'Deloitte', mark: 'Deloitte', weight: 600 },
-    { name: 'Discovery', mark: 'Discovery', weight: 700 },
-    { name: 'Standard Bank', mark: 'Standard Bank', weight: 700 },
-    { name: 'Nedbank', mark: 'Nedbank', weight: 700 },
-    { name: 'PwC', mark: 'PwC', weight: 800 },
-    { name: 'Capitec', mark: 'Capitec', weight: 700 },
+    {
+        name: 'Amazon',
+        logo: '/images/launchpad/companies/amazon.svg',
+    },
+    {
+        name: 'ABSA',
+        logo: '/images/launchpad/companies/absa.svg',
+    },
+    {
+        name: 'Deloitte',
+        logo: '/images/launchpad/companies/deloitte.svg',
+    },
+    {
+        name: 'Discovery',
+        logo: '/images/launchpad/companies/discovery.svg',
+    },
+    {
+        name: 'Standard Bank',
+        logo: '/images/launchpad/companies/standard-bank.svg',
+    },
+    {
+        name: 'Nedbank',
+        logo: '/images/launchpad/companies/nedbank.svg',
+    },
+    {
+        name: 'PwC',
+        logo: '/images/launchpad/companies/pwc.svg',
+    },
+    {
+        name: 'Capitec',
+        logo: '/images/launchpad/companies/capitec.svg',
+    },
 ] as const;
 
 export function CompanyLogosSection() {
@@ -25,12 +49,14 @@ export function CompanyLogosSection() {
                         key={`${company.name}-${index}`}
                         className="inline-flex items-center gap-3 px-5 sm:px-8"
                     >
-                        <span
-                            className="inline-flex min-w-[8.5rem] items-center justify-center rounded-md border border-white/12 bg-white px-4 py-2.5 text-[0.82rem] tracking-[0.02em] text-[var(--lp-navy)] shadow-[0_6px_16px_rgba(0,0,0,0.18)]"
-                            style={{ fontWeight: company.weight }}
-                            title={`${company.name} placement example`}
-                        >
-                            {company.mark}
+                        <span className="inline-flex h-11 min-w-[8.75rem] items-center justify-center rounded-md border border-white/12 bg-white px-4 py-2 shadow-[0_6px_16px_rgba(0,0,0,0.18)]">
+                            <img
+                                src={company.logo}
+                                alt={`${company.name} logo`}
+                                className="h-7 w-auto max-w-[7.5rem] object-contain"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </span>
                         <span className="bg-lp-gold inline-block h-1.5 w-1.5 rounded-full" />
                     </span>

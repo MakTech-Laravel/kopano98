@@ -1,0 +1,7 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 48" role="img" aria-label="Standard Bank">
+  <rect width="190" height="48" fill="#fff"/>
+  <rect x="10" y="10" width="22" height="28" rx="2" fill="#0033A1"/>
+  <path d="M16 24h10M21 16v16" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <text x="40" y="22" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="800" fill="#0033A1">Standard</text>
+  <text x="40" y="36" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="800" fill="#0033A1">Bank</text>
+</svg>
